@@ -18,14 +18,16 @@ set smartindent
 set smarttab
 set cmdheight=2
 set mouse=a
+set autochdir
 
 " Plugins
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin()
 
 Plug 'sheerun/vim-polyglot'
 Plug 'ayu-theme/ayu-vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 
