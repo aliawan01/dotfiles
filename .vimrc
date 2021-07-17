@@ -36,13 +36,14 @@ augroup end
 " Plugins
 call plug#begin()
 
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 Plug 'jiangmiao/auto-pairs'
+Plug 'morhetz/gruvbox'
 
 call plug#end()
 
+colorscheme gruvbox
 set background=dark
-colorscheme default
 
 " Shortcuts
 let mapleader=" "
