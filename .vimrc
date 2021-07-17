@@ -1,5 +1,6 @@
 " General Settings
 set number 
+filetype on 
 syntax on
 if has('termguicolors') 
 	set termguicolors
