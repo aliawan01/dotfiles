@@ -1,13 +1,17 @@
 " General Settings
 set number 
 syntax on
-set termguicolors
+filetype on
+if has('termguicolors') 
+	set termguicolors
+endif
+set encoding=UTF-8
 set hidden
 set nowrap
 set noerrorbells
 set incsearch
 set nohlsearch
-set clipboard=unnamedplus
+set clipboard=unnamed
 set nobackup
 set nowritebackup
 set noswapfile
@@ -16,43 +20,54 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set smartindent
 set smarttab
-set cmdheight=2
+set cmdheight=1
 set mouse=a
 set autochdir
+set visualbell
+set t_vb= 
+set wildmenu
+set autoread
+set updatetime=50
+set guicursor=a:block
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+"Getting rid of previously entered commands in command-mode
+augroup cmdline
+    autocmd!
+    autocmd CmdlineLeave : echo ''
+augroup end
 
 " Plugins
 call plug#begin()
 
-Plug 'sheerun/vim-polyglot'
-Plug 'ayu-theme/ayu-vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'wojciechkepka/vim-github-dark'
 Plug 'jiangmiao/auto-pairs'
+Plug 'morhetz/gruvbox'
+Plug 'ayu-theme/ayu-vim'
+Plug 'tpope/vim-scriptease'
 
 call plug#end()
 
-colorscheme ayu
-let ayucolor='dark'
+let g:gruvbox_bold = 0
+let g:gruvbox_contrast_dark="hard"
 set background=dark
-
-let g:python_highlight_space_errors=0
-
-" Netrw
-let g:netrw_banner=0
+colorscheme gruvbox
+" Getting rid of tildes at the end of the buffer
+" highlight EndOfBuffer guifg=#1d2021
 
 " Shortcuts
 let mapleader=" "
-nnoremap <silent> <leader>b :wincmd v <bar> :Ex <bar> :vertical resize 25 <CR>
-nnoremap <leader>p :FZF<CR>
+
+" For navigating between windows
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+
+nnoremap <leader>o <C-w>o
 
 
-" This is just for WSL as it was not letting me copy and paste due to an issue with the clipboards
-"let s:clip = '/mnt/c/Windows/System32/clip.exe' 
-"if executable(s:clip)
-"	    augroup WSLYank
-"			        autocmd!
-"					        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
-"							    augroup END
-"							endif
+noremap <C--> :resize -5<CR>
+noremap <C-=> :resize +5<CR>
 
-
+tnoremap <ESC> <C-\><C-n>
