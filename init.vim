@@ -1,7 +1,8 @@
 " General Settings
 set number 
 syntax on
-filetype on
+filetype plugin on
+filetype indent on
 if has('termguicolors') 
 	set termguicolors
 endif
@@ -16,8 +17,8 @@ set nobackup
 set nowritebackup
 set noswapfile
 set scrolloff=8
-set tabstop=4 softtabstop=4
-set shiftwidth=4
+set tabstop=4
+set shiftwidth=4 softtabstop=4
 set smartindent
 set smarttab
 set cmdheight=1
@@ -33,14 +34,13 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Getting rid of previously entered commands in command-mode
 augroup cmdline
-    autocmd!
-    autocmd CmdlineLeave : echo ''
+	autocmd!
+	autocmd CmdlineLeave : echo ''
 augroup end
 
 " Plugins
 call plug#begin()
 
-Plug 'wojciechkepka/vim-github-dark'
 Plug 'jiangmiao/auto-pairs'
 Plug 'morhetz/gruvbox'
 Plug 'ayu-theme/ayu-vim'
@@ -52,7 +52,10 @@ let g:gruvbox_bold = 0
 let g:gruvbox_contrast_dark="hard"
 set background=dark
 colorscheme gruvbox
-" Getting rid of tildes at the end of the buffer
+
+" hi Normal guibg=NONE ctermbg=NONE
+
+" Getting rid of ~ at the end of the buffer
 " highlight EndOfBuffer guifg=#1d2021
 
 " Shortcuts
@@ -66,8 +69,25 @@ noremap <C-l> <C-w>l
 
 nnoremap <leader>o <C-w>o
 
-
-noremap <C--> :resize -5<CR>
-noremap <C-=> :resize +5<CR>
+noremap <leader>- :vertical resize -5<CR>
+noremap <leader>= :vertical resize +5<CR>
 
 tnoremap <ESC> <C-\><C-n>
+
+" Fixing c/c++ indentation
+set cindent 
+set cinoptions+=L0,g0,b1 
+
+autocmd FileType cpp,h,c set softtabstop=4
+autocmd FileType make setlocal noexpandtab softtabstop=0
+
+" Current Project
+let $PROJECT="~/Dev/learningcpp/main.cpp"
+
+" Settings for netrw
+let g:netrw_banner = 0
+nnoremap <leader>b :Vex<bar>vertical resize 30<CR> 
+
+"Compiling command
+autocmd Filetype qf setlocal wrap
+autocmd FileType cpp,c nnoremap <leader>c :ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>  
