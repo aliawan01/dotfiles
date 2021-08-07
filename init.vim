@@ -32,12 +32,6 @@ set updatetime=50
 set guicursor=a:block
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-"Getting rid of previously entered commands in command-mode
-augroup cmdline
-	autocmd!
-	autocmd CmdlineLeave : echo ''
-augroup end
-
 " Plugins
 call plug#begin()
 
