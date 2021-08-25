@@ -42,9 +42,7 @@ augroup end
 " Plugins
 call plug#begin()
 
-Plug 'jiangmiao/auto-pairs'
 Plug 'morhetz/gruvbox'
-Plug 'ayu-theme/ayu-vim'
 Plug 'tpope/vim-scriptease'
 
 call plug#end()
@@ -52,7 +50,7 @@ call plug#end()
 let g:gruvbox_bold = 0
 let g:gruvbox_contrast_dark="hard"
 set background=dark
-colorscheme gruvbox
+colorscheme gruvbox 
 
 " hi Normal guibg=NONE ctermbg=NONE
 
@@ -62,27 +60,50 @@ colorscheme gruvbox
 " Shortcuts
 let mapleader=" "
 
+
+" Autocompletion by pressing tab
+inoremap <TAB> <C-n>
+
+nnoremap <C-s> :w<CR>
+
+inoremap <C-h> <left>
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+inoremap <C-l> <right>
+inoremap <C-o> <C-c>O
+
 " For navigating between windows
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 
+
+nnoremap ; :
+
 nnoremap <leader>o <C-w>o
 
-noremap <leader>- :vertical resize -5<CR>
-noremap <leader>= :vertical resize +5<CR>
+noremap <C--> :vertical resize -5<CR>
+noremap <C-=> :vertical resize +5<CR>
+
+" Increasing and decreasing font size
+let font="Consolas"
+let font_size=13
+
+nnoremap <leader>- :execute "set guifont=" . font . ":h" . string(font_size - 1)<CR>
+nnoremap <leader>= :execute "set guifont=" . font . ":h" . string(font_size + 1)<CR>
 
 " Fixing c/c++ indentation
 set cindent 
+set cindent
 set cinoptions+=L0,g0,b1 
 
 autocmd FileType cpp,h,c set softtabstop=4
 autocmd FileType make setlocal noexpandtab softtabstop=0
 
-" Current Project
-let $PROJECT="directory to main project"
-let $PYTHONPROJFECT="directory for python projects"
+" Shortcuts to Switching Projects
+nnoremap <C-b>c :e name_of_project<CR>
+nnoremap <C-b>p :e name_of_project<CR>
 
 " Settings for netrw
 let g:netrw_banner = 0
@@ -98,23 +119,20 @@ endfunction
 
 command! -nargs=0 BDExt :call s:BDExt()
 
-
 "Compiling command
 augroup compiling_commands
 	autocmd!
 	autocmd Filetype qf setlocal wrap
-	autocmd FileType python nnoremap <buffer> <leader>c :setlocal makeprg=python3\ %<bar>ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>
+	autocmd FileType python nnoremap <buffer> <leader>c :setlocal makeprg=python\ %<bar>ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>
 	"autocmd FileType cpp,c nnoremap <leader>c :vs<bar>wincmd l<CR>:vertical resize 50<CR>:term make<CR>
 	autocmd FileType cpp,c nnoremap <leader>c :silent BDExt<CR>:vnew<CR>:vertical resize 50<CR>:term make<CR>:wincmd h<CR>
 	autocmd FileType cpp,c nnoremap <leader>cl :ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>
 augroup END
 
 " Terminal mode commands
-"autocmd TermOpen * setlocal nonumber
 augroup nvim_terminal
 	autocmd!
 	autocmd TermOpen * setlocal nonumber
-	tnoremap <ESC> <C-\><C-n>
+	tnoremap <C-[> <C-\><C-n>
 	nnoremap <leader>t :vs<CR>:term<CR>
 augroup END
-
