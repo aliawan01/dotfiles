@@ -1,5 +1,4 @@
 " General Settings
-set nonumber
 syntax on
 filetype plugin on
 filetype indent on
@@ -44,26 +43,55 @@ augroup end
 call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
-if has('nvim')
-  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/denite.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
-Plug 'colors/handmade.vim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 call plug#end()
 
 set background=dark
-colorscheme handmade
+color darkblue
+
+hi VertSplit guifg=white guibg=black gui=NONE
+hi Todo guifg=Red guibg=#000040 gui=bold
+hi visual guibg=#05059c
+
+lua << EOF
+-- Telescope Setup
+require('telescope').setup {
+	defaults = {
+		prompt_prefix = " > ",
+		mappings = {
+			i = {
+				["<C-q>"] = require('telescope.actions').close,
+				["<C-x>"] = require('telescope.actions').send_to_qflist,
+				["<C-j>"] = require('telescope.actions').move_selection_next,
+				["<C-k>"] = require('telescope.actions').move_selection_previous,
+			},
+			n = {
+				["<C-q>"] = require('telescope.actions').close,
+				["<C-x>"] = require('telescope.actions').send_to_qflist,
+				["<C-j>"] = require('telescope.actions').move_selection_next,
+				["<C-k>"] = require('telescope.actions').move_selection_previous,
+			},
+		}
+	},
+	extensions = {
+		fzy_native = {
+			override_general_sorter = false,
+			override_file_sorter = true,
+		}
+	}	
+}
+require('telescope').load_extension('fzy_native')
+EOF
 
 " Shortcuts
 let mapleader=" "
 
 " Autocompletion by pressing tab
 inoremap <TAB> <C-n>
-
 inoremap <C-h> <left>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
@@ -71,9 +99,15 @@ inoremap <C-o> <C-c>O
 
 " For navigating between windows
 noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+
+" For going through a quickfixlist
+noremap <C-j> :cnext<CR>
+noremap <C-k> :cprevious<CR>
+
+" General Keybindings
+nnoremap j gj
+nnoremap k gk
 
 nnoremap ; :
 
@@ -84,7 +118,7 @@ noremap <C-=> :vertical resize +5<CR>
 
 nnoremap <leader>s :wincmd r<CR>
 
-let font="Liberation Mono"
+let font="Consolas"
 let font_size=13
 
 " Increasing and decreasing font size
@@ -103,9 +137,9 @@ autocmd FileType make setlocal noexpandtab softtabstop=0
 nnoremap <C-b>c :e C:\Dev\LearningC++\main.cpp<CR>
 nnoremap <C-b>p :e C:\Users\aliaw\Documents\creator-dark_copy.xml<CR>
 
-" Keybindings for FZF
-nnoremap <silent> <C-p> :Denite buffer<CR>
-nnoremap <silent> <C-e> :DeniteProjectDir file/rec<CR>
+" Keybindings for Telescope
+nnoremap <silent> <C-e> :lua require('telescope.builtin').find_files()<CR>
+nnoremap <silent> <C-p> :lua require('telescope.builtin').buffers()<CR>
 
 " Settings for netrw
 let g:netrw_banner = 0
@@ -121,7 +155,7 @@ endfunction
 
 command! -nargs=0 BDExt :call s:BDExt()
 
-fun! FindCompilationWindow() 
+fun! FindCompilationWindow() abort
 	if winnr() == 1 
 		wincmd l
 		if winnr() == 1
@@ -133,7 +167,7 @@ fun! FindCompilationWindow()
 	endif
 endfunction
 
-fun! FindPreviousWindow()
+fun! FindPreviousWindow() abort
 	if winnr() == 1
 		wincmd l
 	elseif winnr() == 2
@@ -160,19 +194,3 @@ augroup nvim_terminal
 	nnoremap <leader>t :vs<CR>:term<CR>
 augroup END
 
-" Define mappings
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
