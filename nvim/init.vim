@@ -55,7 +55,8 @@ color darkblue
 
 hi VertSplit guifg=white guibg=black gui=NONE
 hi Todo guifg=Red guibg=#000040 gui=bold
-hi visual guibg=#05059c
+hi Visual guifg=#060691 guibg=#c0c0c0
+hi ErrorMsg guifg=red guibg=#000040 gui=bold
 
 lua << EOF
 -- Telescope Setup
@@ -64,14 +65,14 @@ require('telescope').setup {
 		prompt_prefix = " > ",
 		mappings = {
 			i = {
-				["<C-q>"] = require('telescope.actions').close,
-				["<C-x>"] = require('telescope.actions').send_to_qflist,
+				["<C-w>"] = require('telescope.actions').close,
+				["<C-q>"] = require('telescope.actions').send_to_qflist,
 				["<C-j>"] = require('telescope.actions').move_selection_next,
 				["<C-k>"] = require('telescope.actions').move_selection_previous,
 			},
 			n = {
-				["<C-q>"] = require('telescope.actions').close,
-				["<C-x>"] = require('telescope.actions').send_to_qflist,
+				["<C-w>"] = require('telescope.actions').close,
+				["<C-q>"] = require('telescope.actions').send_to_qflist,
 				["<C-j>"] = require('telescope.actions').move_selection_next,
 				["<C-k>"] = require('telescope.actions').move_selection_previous,
 			},
