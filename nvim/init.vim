@@ -47,16 +47,16 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'junegunn/goyo.vim'
+Plug 'romainl/flattened'
 
 call plug#end()
 
 set background=dark
-color darkblue
+color Neosolarized
 
-hi VertSplit guifg=white guibg=black gui=NONE
-hi Todo guifg=Red guibg=#000040 gui=bold
-hi Visual guifg=#060691 guibg=#c0c0c0
-hi ErrorMsg guifg=red guibg=#000040 gui=bold
+hi Delimiter guifg=#839496
+hi MatchParen guifg=#002b36
 
 lua << EOF
 -- Telescope Setup
@@ -92,7 +92,7 @@ EOF
 let mapleader=" "
 
 " Autocompletion by pressing tab
-inoremap <TAB> <C-n>
+inoremap <C-e> <C-n>
 inoremap <C-h> <left>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
@@ -119,8 +119,8 @@ noremap <C-=> :vertical resize +5<CR>
 
 nnoremap <leader>s :wincmd r<CR>
 
-let font="Consolas"
-let font_size=13
+let font="Hack"
+let font_size=14
 
 " Increasing and decreasing font size
 nnoremap <leader>- :execute "Guifont! " . font . ":h" . string(font_size - 1)<CR>
@@ -176,6 +176,8 @@ fun! FindPreviousWindow() abort
 	endif
 endfunction
 
+autocmd FileType text setlocal linebreak
+
 "Compiling command
 augroup compiling_commands
 	autocmd!
@@ -183,7 +185,7 @@ augroup compiling_commands
 	autocmd FileType python nnoremap <buffer> <leader>c :setlocal makeprg=python\ %<bar>ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>
 	"autocmd FileType cpp,c nnoremap <leader>c :vs<bar>wincmd l<CR>:vertical resize 50<CR>:term make<CR>
 	autocmd FileType message,cpp,c nnoremap <leader>c :silent BDExt<CR>:call FindCompilationWindow()<CR>:term build.bat<CR>:silent call FindPreviousWindow()<CR>
-	autocmd FileType message,cpp,c nnoremap <leader>r :silent BDExt<CR>:call FindCompilationWindow()<CR>:term run.bat<CR>:silent call FindPreviousWindow()<CR>
+	autocmd FileType cpp,c nnoremap <leader>r :silent BDExt<CR>:call FindCompilationWindow()<CR>:term run.bat<CR>:silent call FindPreviousWindow()<CR>
 augroup END
 
 " Terminal mode commands
@@ -194,4 +196,3 @@ augroup nvim_terminal
 	tnoremap <C-[> <C-\><C-n>
 	nnoremap <leader>t :vs<CR>:term<CR>
 augroup END
-
