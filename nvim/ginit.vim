@@ -1,1 +1,1 @@
-Guifont! Hack:h13
+Guifont! Droid Sans Mono:h13
