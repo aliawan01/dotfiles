@@ -53,7 +53,7 @@ Plug 'overcache/NeoSolarized'
 call plug#end()
 
 set background=light
-color personal-theme 
+color cream 
 
 " TODO - Fix todo colour and change the colour of matching braces
 hi EndOfBuffer gui=NONE
