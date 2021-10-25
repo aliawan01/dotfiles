@@ -65,6 +65,7 @@ hi cConditional guifg=SeaGreen gui=bold
 
 " Python
 hi pythonStatement guifg=SeaGreen gui=bold
+hi pythonRepeat guifg=SeaGreen gui=bold
 
 " Vimscript
 hi vimCommand guifg=SeaGreen gui=bold
