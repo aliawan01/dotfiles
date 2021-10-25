@@ -48,15 +48,15 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'junegunn/goyo.vim'
-Plug 'romainl/flattened'
+Plug 'overcache/NeoSolarized'
 
 call plug#end()
 
-set background=dark
-color Neosolarized
+set background=light
+color personal-theme 
 
-hi Delimiter guifg=#839496
-hi MatchParen guifg=#002b36
+" TODO - Fix todo colour and change the colour of matching braces
+hi EndOfBuffer gui=NONE
 
 lua << EOF
 -- Telescope Setup
@@ -119,8 +119,8 @@ noremap <C-=> :vertical resize +5<CR>
 
 nnoremap <leader>s :wincmd r<CR>
 
-let font="Hack"
-let font_size=14
+let font="Droid Sans Mono"
+let font_size=13
 
 " Increasing and decreasing font size
 nnoremap <leader>- :execute "Guifont! " . font . ":h" . string(font_size - 1)<CR>
@@ -196,3 +196,7 @@ augroup nvim_terminal
 	tnoremap <C-[> <C-\><C-n>
 	nnoremap <leader>t :vs<CR>:term<CR>
 augroup END
+
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
