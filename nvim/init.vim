@@ -26,6 +26,7 @@ set mouse=a
 set autochdir
 set splitright
 set visualbell
+set linespace=4
 set t_vb= 
 set wildmenu
 set autoread
@@ -48,12 +49,15 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'junegunn/goyo.vim'
-Plug 'overcache/NeoSolarized'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'zefei/cake16'
+Plug 'markonm/traces.vim'
+Plug 'tpope/vim-commentary'
 
 call plug#end()
 
 set background=light
-color cream 
+color cake16
 
 " TODO - Fix todo colour and change the colour of matching braces
 hi EndOfBuffer gui=NONE
@@ -119,12 +123,22 @@ noremap <C-=> :vertical resize +5<CR>
 
 nnoremap <leader>s :wincmd r<CR>
 
-let font="Droid Sans Mono"
-let font_size=13
+" Commenting out code
+nnoremap <C-/> :Commentary<CR>
+vnoremap <C-/> :Commentary<CR>
 
 " Increasing and decreasing font size
-nnoremap <leader>- :execute "Guifont! " . font . ":h" . string(font_size - 1)<CR>
-nnoremap <leader>= :execute "Guifont! " . font . ":h" . string(font_size + 1)<CR>
+nnoremap <leader>= :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)+1)',
+ \ '')<CR>
+
+nnoremap <leader>- :silent! let &guifont = substitute(
+ \ &guifont,
+ \ ':h\zs\d\+',
+ \ '\=eval(submatch(0)-1)',
+ \ '')<CR>
 
 " Fixing c/c++ indentation
 set cindent 
