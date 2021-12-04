@@ -1,4 +1,4 @@
-" General Settings
+" General Setting
 syntax on
 filetype plugin on
 filetype indent on
@@ -66,7 +66,6 @@ lua << EOF
 -- Telescope Setup
 require('telescope').setup {
 	defaults = {
-		prompt_prefix = " > ",
 		mappings = {
 			i = {
 				["<C-w>"] = require('telescope.actions').close,
@@ -82,6 +81,16 @@ require('telescope').setup {
 			},
 		}
 	},
+	pickers = {
+		find_files = {
+			prompt_prefix="🔍 ",
+			theme = "dropdown",
+		},
+		buffers = {
+			prompt_prefix = "📄 ",
+			theme = "dropdown",
+		}
+	},
 	extensions = {
 		fzy_native = {
 			override_general_sorter = false,
@@ -95,9 +104,8 @@ EOF
 " Shortcuts
 let mapleader=" "
 
-" Autocomplete by pressing Ctrl+e
+" Autocompletion by pressing tab
 inoremap <C-e> <C-n>
-
 inoremap <C-h> <left>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
@@ -149,6 +157,9 @@ set cinoptions+=L0,g0,b1
 autocmd FileType cpp,h,c set softtabstop=4
 autocmd FileType make setlocal noexpandtab softtabstop=0
 
+" Shortcuts to Switching Projects
+nnoremap <C-b>c :e name of project<CR>
+
 " Keybindings for Telescope
 nnoremap <silent> <C-e> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <silent> <C-p> :lua require('telescope.builtin').buffers()<CR>
@@ -193,8 +204,11 @@ autocmd FileType text setlocal linebreak
 augroup compiling_commands
 	autocmd!
 	autocmd Filetype qf setlocal wrap
-	autocmd FileType python nnoremap <buffer> <leader>c :setlocal makeprg=python\ %<bar>ccl<bar>silent make<bar>vert copen<bar>vertical resize 50<bar>:wincmd x<CR>
+	" For running python code
+	"autocmd FileType python nnoremap <buffer> <leader>c :let python_file=expand('%:p')<CR>:silent BDExt<CR>:call FindCompilationWindow()<CR>:term 'python ' . python_file<CR>:silent call FindPreviousWindow()<CR>
+	autocmd FileType python nnoremap <buffer> <leader>c :let python_file=expand('%:p')<CR>:silent BDExt<CR>:call FindCompilationWindow()<CR>:execute 'term python ' .. python_file<CR>:silent call FindPreviousWindow()<CR>
 	"autocmd FileType cpp,c nnoremap <leader>c :vs<bar>wincmd l<CR>:vertical resize 50<CR>:term make<CR>
+	" For buildling and running c/c++ code
 	autocmd FileType message,cpp,c nnoremap <leader>c :silent BDExt<CR>:call FindCompilationWindow()<CR>:term build.bat<CR>:silent call FindPreviousWindow()<CR>
 	autocmd FileType cpp,c nnoremap <leader>r :silent BDExt<CR>:call FindCompilationWindow()<CR>:term run.bat<CR>:silent call FindPreviousWindow()<CR>
 augroup END
