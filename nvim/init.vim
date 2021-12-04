@@ -95,8 +95,9 @@ EOF
 " Shortcuts
 let mapleader=" "
 
-" Autocompletion by pressing tab
+" Autocomplete by pressing Ctrl+e
 inoremap <C-e> <C-n>
+
 inoremap <C-h> <left>
 inoremap <C-k> <up>
 inoremap <C-l> <right>
@@ -147,10 +148,6 @@ set cinoptions+=L0,g0,b1
 
 autocmd FileType cpp,h,c set softtabstop=4
 autocmd FileType make setlocal noexpandtab softtabstop=0
-
-" Shortcuts to Switching Projects
-nnoremap <C-b>c :e C:\Dev\LearningC++\main.cpp<CR>
-nnoremap <C-b>p :e C:\Users\aliaw\Documents\creator-dark_copy.xml<CR>
 
 " Keybindings for Telescope
 nnoremap <silent> <C-e> :lua require('telescope.builtin').find_files()<CR>
