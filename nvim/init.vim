@@ -7,7 +7,7 @@ if has('termguicolors')
 endif
 set encoding=UTF-8
 set hidden
-set wrap
+set nowrap
 set noerrorbells
 set incsearch
 set autoindent
@@ -26,12 +26,11 @@ set mouse=a
 set autochdir
 set splitright
 set visualbell
-set linespace=4
 set t_vb= 
 set wildmenu
 set autoread
-set updatetime=50
 set guicursor=a:block
+set updatetime=50
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 "Getting rid of previously entered commands in command-mode
@@ -49,18 +48,24 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'junegunn/goyo.vim'
-Plug 'nvim-lualine/lualine.nvim'
 Plug 'zefei/cake16'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-commentary'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 
 call plug#end()
 
 set background=light
 color cake16
 
-" TODO - Fix todo colour and change the colour of matching braces
 hi EndOfBuffer gui=NONE
+
+" Nvim-tree
+let g:nvim_tree_refresh_wait = 500
 
 lua << EOF
 -- Telescope Setup
@@ -99,6 +104,19 @@ require('telescope').setup {
 	}	
 }
 require('telescope').load_extension('fzy_native')
+
+-- cmp
+vim.o.completeopt = 'menuone,noselect'
+
+require('cmp').setup{
+	sources = require('cmp').config.sources{
+		{ name = 'buffer', max_item_count = 8},
+		{ name = 'path', max_item_count = 4},
+	}
+}
+
+-- Nvim-tree
+require('nvim-tree').setup{disable_netrw = true}
 EOF
 
 " Shortcuts
@@ -132,6 +150,10 @@ noremap <C-=> :vertical resize +5<CR>
 
 nnoremap <leader>s :wincmd r<CR>
 
+" Nvim-Tree bindings
+nnoremap <leader>b :NvimTreeToggle<CR>
+nnoremap <leader>br :NvimTreeRefresh<CR>
+
 " Commenting out code
 nnoremap <C-/> :Commentary<CR>
 vnoremap <C-/> :Commentary<CR>
@@ -158,15 +180,12 @@ autocmd FileType cpp,h,c set softtabstop=4
 autocmd FileType make setlocal noexpandtab softtabstop=0
 
 " Shortcuts to Switching Projects
-nnoremap <C-b>c :e name of project<CR>
+"nnoremap <C-b>c :e C:\Dev\LearningCplusplus\thing.py<CR>
+nnoremap <C-b>c :e C:\Dev\ayaans_game\main.py<CR>
 
 " Keybindings for Telescope
 nnoremap <silent> <C-e> :lua require('telescope.builtin').find_files()<CR>
 nnoremap <silent> <C-p> :lua require('telescope.builtin').buffers()<CR>
-
-" Settings for netrw
-let g:netrw_banner = 0
-nnoremap <silent> <leader>b :Vex<bar>vertical resize 30<CR> 
 
 function! s:BDExt()
   let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && bufname(v:val) =~ "term*"')
@@ -205,10 +224,8 @@ augroup compiling_commands
 	autocmd!
 	autocmd Filetype qf setlocal wrap
 	" For running python code
-	"autocmd FileType python nnoremap <buffer> <leader>c :let python_file=expand('%:p')<CR>:silent BDExt<CR>:call FindCompilationWindow()<CR>:term 'python ' . python_file<CR>:silent call FindPreviousWindow()<CR>
-	autocmd FileType python nnoremap <buffer> <leader>c :let python_file=expand('%:p')<CR>:silent BDExt<CR>:call FindCompilationWindow()<CR>:execute 'term python ' .. python_file<CR>:silent call FindPreviousWindow()<CR>
-	"autocmd FileType cpp,c nnoremap <leader>c :vs<bar>wincmd l<CR>:vertical resize 50<CR>:term make<CR>
-	" For buildling and running c/c++ code
+	autocmd FileType python nnoremap <buffer> <leader>c :silent let python_file=expand('%:p')<CR>:silent BDExt<CR>:silent call FindCompilationWindow()<CR>:silent execute 'term python ' .. python_file<CR>:silent call FindPreviousWindow()<CR>
+	" For building and running c/c++ code
 	autocmd FileType message,cpp,c nnoremap <leader>c :silent BDExt<CR>:call FindCompilationWindow()<CR>:term build.bat<CR>:silent call FindPreviousWindow()<CR>
 	autocmd FileType cpp,c nnoremap <leader>r :silent BDExt<CR>:call FindCompilationWindow()<CR>:term run.bat<CR>:silent call FindPreviousWindow()<CR>
 augroup END
