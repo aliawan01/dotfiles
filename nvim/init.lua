@@ -11,6 +11,7 @@ local options = {
 	wrap = false,
 	errorbells = false,
 	incsearch = true,
+	linespace = 4,
 	autoindent = true,
 	hlsearch = false,
 	clipboard = 'unnamedplus',
@@ -55,15 +56,11 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'junegunn/goyo.vim'
-Plug 'zefei/cake16'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-commentary'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'sainnhe/everforest'
-Plug 'C:\Dev\nvim-build\'
 
 call plug#end()
 ]] 
@@ -117,11 +114,8 @@ require('cmp').setup {
 }
 
 -- Colorscheme
-local colorscheme = 'cake16'
-local check_colorscheme = pcall(vim.cmd, 'colorscheme ' .. colorscheme)
-if not check_colorscheme then
-	print("Colorscheme " .. colorscheme .. " is not installed!")
-end
+local colorscheme = 'cream'
+vim.cmd("colorscheme " .. colorscheme)
 
 -- Keybindings
 local key_options = { silent = true, noremap = true }
@@ -146,6 +140,7 @@ set_key('n', 'j', 'gj')
 set_key('n', 'k', 'gk')
 
 vim.cmd [[nnoremap ; :]]
+vim.cmd [[nnoremap <C-6> <C-^>]]
 
 set_key('n', '<C-b>c', [[:e C:\Dev\ayaans_game\main.py<CR>]])
 set_key('n', '<C-b>l', [[:e C:\Dev\nvim-build\lua\nvim-build-plugin\init.lua<CR>]])
@@ -160,7 +155,6 @@ set_key('n', '<leader>s', ':wincmd r<CR>')
 
 set_key('n', '<leader>u', ':Commentary<CR>')
 set_key('v', '<leader>u', ':Commentary<CR>')
-
 
 set_key('n', '<C-e>', ':lua require("telescope.builtin").find_files()<CR>')
 set_key('n', '<C-p>', ':lua require("telescope.builtin").buffers()<CR>')
@@ -221,7 +215,7 @@ vim.cmd [[
 		autocmd FileType python nnoremap <buffer> <leader>c :silent let python_file=expand('%:p')<CR>:silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:silent execute 'term python ' .. python_file<CR>:silent lua FindPreviousWindow()<CR>
 		" For building and running c/c++ code
 		autocmd FileType message,cpp,c nnoremap <leader>c :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term build.bat<CR>:silent lua FindPreviousWindow()<CR>
-		autocmd FileType cpp,c nnoremap <leader>r :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term run.bat<CR>:silent lua FindPreviousWindow()<CR>
+		autocmd FileType message,cpp,c nnoremap <leader>t :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term run.bat<CR>:silent lua FindPreviousWindow()<CR>
 	augroup END
 
 	" Terminal mode commands
@@ -230,6 +224,6 @@ vim.cmd [[
 		autocmd!
 		autocmd TermOpen * set filetype=message
 		tnoremap <C-[> <C-\><C-n>
-		nnoremap <leader>t :vs<CR>:term<CR>
+		nnoremap <C-t> :vs<CR>:term<CR>
 	augroup END
 ]] 
