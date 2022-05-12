@@ -66,6 +66,7 @@ hi cConditional guifg=#2f0dc9 gui=NONE
 hi cFormat guifg=#008e07 gui=NONE
 hi cSpecial guifg=#008e07 gui=NONE
 hi cStorageClass guifg=#2f0dc9 gui=NONE
+hi cFloat guifg=#008e07 gui=NONE
 
 " Python
 hi pythonStatement guifg=#2f0dc9 gui=NONE
@@ -78,6 +79,8 @@ hi vimCommand guifg=#2f0dc9 gui=NONE
 hi luaFunction guifg=#2f0dc9 gui=NONE
 hi luaStatement guifg=#4523de
 hi luaCond guifg=#4523de
+hi luaOperator guifg=#4523de
+hi luaTable guifg=black
 
 " JavaScript
 hi javaScriptBraces guifg=black
@@ -85,4 +88,3 @@ hi javaScriptConditional guifg=#2f0dc9 gui=NONE
 hi javaScriptException guifg=#2f0dc9 gui=NONE
 hi javaScriptStatement guifg=#2f0dc9 gui=NONE
 hi javaScriptIdentifier guifg=#4523de
-
