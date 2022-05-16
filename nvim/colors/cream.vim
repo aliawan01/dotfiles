@@ -10,6 +10,7 @@ if has('termguicolors')
 	set termguicolors
 endif
 
+" Considering to change the background to this: #ffffd7
 " General
 hi Normal guifg=black guibg=#f9fcd9 gui=NONE
 hi Type guifg=black guibg=#f9fcd9 gui=NONE
