@@ -47,8 +47,8 @@ for setting, option in pairs(options) do
 	vim.opt[setting] = option
 end
 
+-- Plugins
 vim.cmd [[
-" Plugins
 call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
@@ -188,6 +188,55 @@ function FindPreviousWindow()
 	end
 end
 
+local function del_parent_dir(path)
+    local before, after = path:match("(.*\\)[^\\]+\\([^\\]+)")
+    return before and before .. after or path
+end
+
+local function get_parent_dir(path) 
+    local path_to_parent, filename = path:match[[^(.+)\.-\(.-)$]]
+	return path_to_parent
+end
+
+function build(build_cmd_or_file, is_cmd_or_file) 
+	local build_cmd
+	if (is_cmd_or_file == "file") then 
+    	local build_file_name = build_cmd_or_file
+    	local build_script_exists = false
+    	local build_dir = string.format("%s", io.popen"cd":read'*l')
+    	local build_script_path = string.format("%s\\%s", build_dir, build_file_name)
+    	local build_paths_table = { build_script_path }
+    	
+       	while (build_script_exists == false) do
+       		local build_script = io.open(build_paths_table[#build_paths_table], "r")
+   
+       		if build_script~=nil then 
+       			io.close(build_script)
+       			if (#build_paths_table ~= 1) then
+       				build_dir = get_parent_dir(build_paths_table[#build_paths_table - 1])
+       			end
+   
+       			build_script_exists = true 
+       		else 
+       			table.insert(build_paths_table, del_parent_dir(build_paths_table[#build_paths_table]))
+       		end
+   
+       		if (build_paths_table[#build_paths_table] == string.format("C:\\%s", build_file_name)) then
+       			print(string.format("Could not find %s!", build_file_name))
+       			return
+       		end
+   
+       	end
+       	build_cmd = string.format(":term pushd %s&%s&popd", build_dir, build_file_name)
+	else 
+		local cmd = build_cmd_or_file
+		local cmd_dir = string.format("%s", io.popen"cd":read'*l')
+		build_cmd = string.format(":term pushd %s&%s&popd", cmd_dir, cmd)
+	end
+
+	vim.cmd(build_cmd)
+end
+
 vim.cmd [[
 function! s:BDExt()
   let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val) && bufname(v:val) =~ "term*"')
@@ -214,8 +263,8 @@ vim.cmd [[
 		" For running python code
 		autocmd FileType python nnoremap <buffer> <leader>c :silent let python_file=expand('%:p')<CR>:silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:silent execute 'term python ' .. python_file<CR>:silent lua FindPreviousWindow()<CR>
 		" For building and running c/c++ code
-		autocmd FileType message,cpp,c nnoremap <leader>c :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term build.bat<CR>:silent lua FindPreviousWindow()<CR>
-		autocmd FileType message,cpp,c nnoremap <leader>t :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term run.bat<CR>:silent lua FindPreviousWindow()<CR>
+		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>c :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:lua build("build.bat", "file")<CR>:silent lua FindPreviousWindow()<CR>
+		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>t :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:lua build("run.bat", "file")<CR>:silent lua FindPreviousWindow()<CR>
 	augroup END
 
 	" Terminal mode commands
