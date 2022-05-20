@@ -68,6 +68,7 @@ hi cFormat guifg=#008e07 gui=NONE
 hi cSpecial guifg=#008e07 gui=NONE
 hi cStorageClass guifg=#2f0dc9 gui=NONE
 hi cFloat guifg=#008e07 gui=NONE
+hi cPreCondit guifg=#8A3324
 
 " Python
 hi pythonStatement guifg=#2f0dc9 gui=NONE
