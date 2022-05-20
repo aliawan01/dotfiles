@@ -142,8 +142,8 @@ set_key('n', 'k', 'gk')
 vim.cmd [[nnoremap ; :]]
 vim.cmd [[nnoremap <C-6> <C-^>]]
 
-set_key('n', '<C-b>c', [[:e C:\Dev\ayaans_game\main.py<CR>]])
-set_key('n', '<C-b>l', [[:e C:\Dev\nvim-build\lua\nvim-build-plugin\init.lua<CR>]])
+-- set_key('n', '<C-b>c', )
+-- set_key('n', '<C-b>l', )
 
 set_key('n', '<leader>o', '<C-w>o')
 
