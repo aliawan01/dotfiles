@@ -1,7 +1,6 @@
 vim.cmd [[
 	syntax on
-	filetype plugin on
-	filetype indent on
+	filetype on
 ]] 
 
 local options = {
@@ -58,12 +57,22 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-commentary'
+Plug 'neovim/nvim-lspconfig'
+Plug 'mileszs/ack.vim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
+Plug 'quangnguyen30192/cmp-nvim-tags'
 
 call plug#end()
 ]] 
+
+-- Ack.vim
+vim.cmd [[
+	let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+	let g:ack_use_cword_for_empty_search = 1
+	cnoreabbrev Ack Ack!
+]]
 
 -- Telescope Setup
 require('telescope').setup {
@@ -104,13 +113,32 @@ require('telescope').setup {
 require('telescope').load_extension('fzy_native')
 
 -- cmp
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menuone,noselect,noinsert'
 
-require('cmp').setup {
+local cmp = require('cmp')
+cmp.setup {
 	sources = require('cmp').config.sources{
-		{ name = 'buffer', max_item_count = 8},
-		{ name = 'path', max_item_count = 4},
-	}
+		{ name = 'tags', max_item_count=5 },
+		{ name = 'buffer', max_item_count = 3},
+	},
+
+    mapping = {
+      ["<C-n>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+        else
+          fallback()
+        end
+      end, { "i" }),
+      ["<C-p>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        else
+          fallback()
+        end
+      end, { "i" }),
+    }
+
 }
 
 -- Colorscheme
@@ -133,20 +161,25 @@ set_key('i', '<C-o>', '<C-c>O')
 
 set_key('n', '<C-h>', '<C-w>h')
 set_key('n', '<C-l>', '<C-w>l')
-set_key('n', '<C-j>', '<C-w>j')
-set_key('n', '<C-k>', '<C-w>k')
+
+set_key('n', '<leader>q', ':cclose<CR>')
+set_key('n', '<C-j>', ':cnext<CR>')
+set_key('n', '<C-k>', ':cprev<CR>')
 
 set_key('n', 'j', 'gj')
 set_key('n', 'k', 'gk')
 
 vim.cmd [[nnoremap ; :]]
-vim.cmd [[nnoremap <C-6> <C-^>]]
 
--- set_key('n', '<C-b>c', )
--- set_key('n', '<C-b>l', )
+set_key('n', '<C-f>', ':find ')
+
+set_key('n', '<leader>pf', [[:e C:\tools\4coder\build.bat<bar>set path=.,**<bar>e custom\4coder_ali.cpp<CR>]])
+set_key('n', '<leader>po', [[:e C:\Dev\opengl\main.c<CR>]])
 
 set_key('n', '<leader>o', '<C-w>o')
 
+set_key('n', '<leader>s', ':Ack!<CR>')
+set_key('n', '<leader>/', ':Ack!<space>')
 
 set_key('n', '<C-->', ':vertical resize -5<CR>')
 set_key('n', '<C-=>', ':vertical resize +5<CR>')
@@ -159,7 +192,7 @@ set_key('v', '<leader>u', ':Commentary<CR>')
 set_key('n', '<C-e>', ':lua require("telescope.builtin").find_files()<CR>')
 set_key('n', '<C-p>', ':lua require("telescope.builtin").buffers()<CR>')
 
--- Don't ask
+-- Helped me when making my colorscheme
 set_key('n', '<F10>', ':echo \"hi<\" . synIDattr(synID(line(\".\"),col(\".\"),1),\"name\") . \'> trans<\' . synIDattr(synID(line(\".\"),col(\".\"),0),\"name\") . \"> lo<\" . synIDattr(synIDtrans(synID(line(\".\"),col(\".\"),1)),\"name\") . \">"<CR>')
 
 -- Functions to find windows
