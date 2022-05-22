@@ -178,7 +178,7 @@ set_key('n', '<leader>po', [[:e C:\Dev\opengl\main.c<CR>]])
 
 set_key('n', '<leader>o', '<C-w>o')
 
-set_key('n', '<leader>s', ':Ack!<CR>')
+set_key('n', '<C-s>', ':Ack!<CR>')
 set_key('n', '<leader>/', ':Ack!<space>')
 
 set_key('n', '<C-->', ':vertical resize -5<CR>')
@@ -288,8 +288,8 @@ vim.cmd [[
 	autocmd FileType cpp,h,c set softtabstop=4
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
+	autocmd! FileType qf wincmd H | wincmd r
 
-	"Compiling command
 	augroup compiling_commands
 		autocmd!
 		autocmd Filetype qf setlocal wrap
