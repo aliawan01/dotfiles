@@ -71,6 +71,7 @@ call plug#end()
 vim.cmd [[
 	let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
 	let g:ack_use_cword_for_empty_search = 1
+	let g:ack_autoclose = 1
 	cnoreabbrev Ack Ack!
 ]]
 
@@ -162,7 +163,9 @@ set_key('i', '<C-o>', '<C-c>O')
 set_key('n', '<C-h>', '<C-w>h')
 set_key('n', '<C-l>', '<C-w>l')
 
-set_key('n', '<leader>q', ':cclose<CR>')
+set_key('n', '<leader>qo', ':copen<CR>')
+set_key('n', '<leader>qq', ':cclose<CR>')
+
 set_key('n', '<C-j>', ':cnext<CR>')
 set_key('n', '<C-k>', ':cprev<CR>')
 
@@ -180,6 +183,8 @@ set_key('n', '<leader>o', '<C-w>o')
 
 set_key('n', '<C-s>', ':Ack!<CR>')
 set_key('n', '<leader>/', ':Ack!<space>')
+
+set_key('n', 'gd', '<C-]>')
 
 set_key('n', '<C-->', ':vertical resize -5<CR>')
 set_key('n', '<C-=>', ':vertical resize +5<CR>')
@@ -288,7 +293,7 @@ vim.cmd [[
 	autocmd FileType cpp,h,c set softtabstop=4
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
-	autocmd! FileType qf wincmd H | wincmd r
+	autocmd FileType qf wincmd H | wincmd R
 
 	augroup compiling_commands
 		autocmd!
