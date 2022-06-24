@@ -53,94 +53,83 @@ call plug#begin()
 Plug 'jiangmiao/auto-pairs'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-commentary'
 Plug 'neovim/nvim-lspconfig'
-Plug 'mileszs/ack.vim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
-Plug 'quangnguyen30192/cmp-nvim-tags'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 ]] 
-
--- Ack.vim
-vim.cmd [[
-	let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
-	let g:ack_use_cword_for_empty_search = 1
-	let g:ack_autoclose = 1
-	cnoreabbrev Ack Ack!
-]]
-
+--
 -- Telescope Setup
-require('telescope').setup {
-	defaults = {
-		mappings = {
-			i = {
-				["<C-w>"] = require('telescope.actions').close,
-				["<C-q>"] = require('telescope.actions').send_to_qflist,
-				["<C-j>"] = require('telescope.actions').move_selection_next,
-				["<C-k>"] = require('telescope.actions').move_selection_previous,
-			},
-			n = {
-				["<C-w>"] = require('telescope.actions').close,
-				["<C-q>"] = require('telescope.actions').send_to_qflist,
-				["<C-j>"] = require('telescope.actions').move_selection_next,
-				["<C-k>"] = require('telescope.actions').move_selection_previous,
-			},
-		}
-	},
-	pickers = {
-		find_files = {
-			prompt_prefix="🔍 ",
-			theme = "dropdown",
-		},
-		buffers = {
-			prompt_prefix = "📄 ",
-			theme = "dropdown",
-		}
-	},
-	extensions = {
-		fzy_native = {
-			override_general_sorter = false,
-			override_file_sorter = true,
-		}
-	}	
-}
-
-require('telescope').load_extension('fzy_native')
+--require('telescope').setup {
+--	defaults = {
+--		mappings = {
+--			i = {
+--				["<C-w>"] = require('telescope.actions').close,
+--				["<C-q>"] = require('telescope.actions').send_to_qflist,
+--				["<C-j>"] = require('telescope.actions').move_selection_next,
+--				["<C-k>"] = require('telescope.actions').move_selection_previous,
+--			},
+--			n = {
+--				["<C-w>"] = require('telescope.actions').close,
+--				["<C-q>"] = require('telescope.actions').send_to_qflist,
+--				["<C-j>"] = require('telescope.actions').move_selection_next,
+--				["<C-k>"] = require('telescope.actions').move_selection_previous,
+--			},
+--		}
+--	},
+--	pickers = {
+--		find_files = {
+--			prompt_prefix="🔍 ",
+--			theme = "dropdown",
+--		},
+--		buffers = {
+--			prompt_prefix = "📄 ",
+--			theme = "dropdown",
+--		}
+--	},
+--	extensions = {
+--		fzy_native = {
+--			override_general_sorter = false,
+--			override_file_sorter = true,
+--		}
+--	}	
+--}
+--
+--require('telescope').load_extension('fzy_native')
 
 -- cmp
-vim.o.completeopt = 'menuone,noselect,noinsert'
-
-local cmp = require('cmp')
-cmp.setup {
-	sources = require('cmp').config.sources{
-		{ name = 'tags', max_item_count=5 },
-		{ name = 'buffer', max_item_count = 3},
-	},
-
-    mapping = {
-      ["<C-n>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_next_item()
-        else
-          fallback()
-        end
-      end, { "i" }),
-      ["<C-p>"] = cmp.mapping(function(fallback)
-        if cmp.visible() then
-          cmp.select_prev_item()
-        else
-          fallback()
-        end
-      end, { "i" }),
-    }
-
-}
+--vim.o.completeopt = 'menuone,noselect,noinsert'
+--
+--local cmp = require('cmp')
+--cmp.setup {
+--	sources = require('cmp').config.sources{
+--		{ name = 'tags', max_item_count=5 },
+--		{ name = 'buffer', max_item_count = 3},
+--	},
+--
+--    mapping = {
+--      ["<C-n>"] = cmp.mapping(function(fallback)
+--        if cmp.visible() then
+--          cmp.select_next_item()
+--        else
+--          fallback()
+--        end
+--      end, { "i" }),
+--      ["<C-p>"] = cmp.mapping(function(fallback)
+--        if cmp.visible() then
+--          cmp.select_prev_item()
+--        else
+--          fallback()
+--        end
+--      end, { "i" }),
+--    }
+--}
 
 -- Colorscheme
 local colorscheme = 'cream'
@@ -154,35 +143,25 @@ end
 
 vim.g.mapleader = " "
 
-set_key('i', '<C-e>', '<C-n>')
-set_key('i', '<C-h>', '<left>')
-set_key('i', '<C-k>', '<up>')
-set_key('i', '<C-l>', '<right>')
-set_key('i', '<C-o>', '<C-c>O')
-
 set_key('n', '<C-h>', '<C-w>h')
 set_key('n', '<C-l>', '<C-w>l')
+set_key('n', '<C-j>', '<C-w>j')
+set_key('n', '<C-k>', '<C-w>k')
 
 set_key('n', '<leader>qo', ':copen<CR>')
 set_key('n', '<leader>qq', ':cclose<CR>')
 
-set_key('n', '<C-j>', ':cnext<CR>')
-set_key('n', '<C-k>', ':cprev<CR>')
+set_key('n', '<leader>j', ':cnext<CR>')
+set_key('n', '<leader>k', ':cprev<CR>')
 
 set_key('n', 'j', 'gj')
 set_key('n', 'k', 'gk')
 
 vim.cmd [[nnoremap ; :]]
 
-set_key('n', '<C-f>', ':find ')
-
-set_key('n', '<leader>pf', [[:e C:\tools\4coder\build.bat<bar>set path=.,**<bar>e custom\4coder_ali.cpp<CR>]])
-set_key('n', '<leader>po', [[:e C:\Dev\opengl\main.c<CR>]])
+set_key('n', '<leader>po', [[:e C:\Dev\learning_opengl<CR>]])
 
 set_key('n', '<leader>o', '<C-w>o')
-
-set_key('n', '<C-s>', ':Ack!<CR>')
-set_key('n', '<leader>/', ':Ack!<space>')
 
 set_key('n', 'gd', '<C-]>')
 
@@ -191,11 +170,19 @@ set_key('n', '<C-=>', ':vertical resize +5<CR>')
 
 set_key('n', '<leader>s', ':wincmd r<CR>')
 
-set_key('n', '<leader>u', ':Commentary<CR>')
-set_key('v', '<leader>u', ':Commentary<CR>')
+set_key('n', '<leader>/', ':Commentary<CR>')
+set_key('v', '<leader>/', ':Commentary<CR>')
 
-set_key('n', '<C-e>', ':lua require("telescope.builtin").find_files()<CR>')
-set_key('n', '<C-p>', ':lua require("telescope.builtin").buffers()<CR>')
+vim.cmd [[
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+
+command! ProjectFiles execute 'Files' s:find_git_root()
+]]
+
+set_key('n', '<C-e>', ':ProjectFiles<CR>')
+set_key('n', '<C-p>', ':Buffers<CR>')
 
 -- Helped me when making my colorscheme
 set_key('n', '<F10>', ':echo \"hi<\" . synIDattr(synID(line(\".\"),col(\".\"),1),\"name\") . \'> trans<\' . synIDattr(synID(line(\".\"),col(\".\"),0),\"name\") . \"> lo<\" . synIDattr(synIDtrans(synID(line(\".\"),col(\".\"),1)),\"name\") . \">"<CR>')
