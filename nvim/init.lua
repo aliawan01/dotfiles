@@ -159,7 +159,7 @@ set_key('n', 'k', 'gk')
 
 vim.cmd [[nnoremap ; :]]
 
-set_key('n', '<leader>po', [[:e Put the path to the project here<CR>]])
+set_key('n', '<leader>po', [[:e .]])
 
 set_key('n', '<leader>o', '<C-w>o')
 
