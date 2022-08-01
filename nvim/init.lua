@@ -132,7 +132,7 @@ call plug#end()
 --}
 
 -- Colorscheme
-local colorscheme = 'cream'
+local colorscheme = 'new_cream'
 vim.cmd("colorscheme " .. colorscheme)
 
 -- Keybindings
