@@ -51,14 +51,9 @@ vim.cmd [[
 call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
 Plug 'markonm/traces.vim'
 Plug 'tpope/vim-commentary'
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -131,8 +126,37 @@ call plug#end()
 --    }
 --}
 
+
+-- nvim-lsp
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"}),
+}
+
+local on_attach = function(client, bufnr)
+	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+	vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+	vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, bufopts)
+	vim.keymap.set('n', '<leader>r', vim.lsp.buf.rename, bufopts)
+	vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+
+	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+	vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+	vim.keymap.set('n', '<space>wl', function()
+		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+	end, bufopts)
+
+	vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+end
+
+require('lspconfig').clangd.setup{
+    on_attach = on_attach,
+	handlers = handlers,
+}
+
 -- Colorscheme
-local colorscheme = 'new_cream'
+local colorscheme = 'cream'
 vim.cmd("colorscheme " .. colorscheme)
 
 -- Keybindings
@@ -159,7 +183,7 @@ set_key('n', 'k', 'gk')
 
 vim.cmd [[nnoremap ; :]]
 
-set_key('n', '<leader>po', [[:e .]])
+set_key('n', '<leader>po', [[:e ~/Dev/learning_opengl<CR>]])
 
 set_key('n', '<leader>o', '<C-w>o')
 
@@ -280,16 +304,15 @@ vim.cmd [[
 	autocmd FileType cpp,h,c set softtabstop=4
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
-	autocmd FileType qf wincmd H | wincmd R
 
 	augroup compiling_commands
 		autocmd!
-		autocmd Filetype qf setlocal wrap
+		" autocmd Filetype qf setlocal wrap
 		" For running python code
 		autocmd FileType python nnoremap <buffer> <leader>c :silent let python_file=expand('%:p')<CR>:silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:silent execute 'term python ' .. python_file<CR>:silent lua FindPreviousWindow()<CR>
 		" For building and running c/c++ code
-		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>c :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:lua build("build.bat", "file")<CR>:silent lua FindPreviousWindow()<CR>
-		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>t :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:lua build("run.bat", "file")<CR>:silent lua FindPreviousWindow()<CR>
+		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>c :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term pushd ~/Dev/learning_opengl/&&./build.sh&&popd<CR>:silent lua FindPreviousWindow()<CR>
+		autocmd FileType message,cpp,c,dosbatch,make nnoremap <leader>t :silent BDExt<CR>:silent lua FindCompilationWindow()<CR>:term pushd ~/Dev/learning_opengl/&&./run.sh&&popd<CR>:silent lua FindPreviousWindow()<CR>
 	augroup END
 
 	" Terminal mode commands
@@ -300,4 +323,4 @@ vim.cmd [[
 		tnoremap <C-[> <C-\><C-n>
 		nnoremap <C-t> :vs<CR>:term<CR>
 	augroup END
-]] 
+]]
