@@ -1,42 +1,41 @@
 local wezterm = require('wezterm')
+local mux = wezterm.mux
 
-local black  = "#000000"
-local brown  = "#8A3324"
-local red	 = "#DB5B4F"
-local green	 = "#008e07"
-local yellow = "#ffffd7"
-local blue   = "#2f0dc9"
-local purple = "#CA27B4"
-local white	 = "#FFFFFF"
+wezterm.on("gui-startup", function()
+  local tab, pane, window = mux.spawn_window{}
+  window:gui_window():maximize()
+end)
 
-return {
-	font = wezterm.font("Liberation Mono"),
-	font_size = 13,
-
-	use_fancy_tab_bar = true,
+return { 
+	font = wezterm.font("JetBrains Mono Medium"),
+	font_size = 13.5,
     window_close_confirmation = "NeverPrompt",
-    enable_tab_bar = false,
+	use_fancy_tab_bar = false,
+    color_scheme = "Gruvbox dark, hard (base16)",
 
     window_padding = {
-      left = 5,
-      right = 0,
-      top = 0,
+      left = 8,
+      right = 8,
+      top = 8,
       bottom = 0,
     },
+	keys = {
+		{
+		    key = 'F11', action = wezterm.action.ToggleFullScreen,
+		},
+		{
+			key = 'l', mods='SHIFT|CTRL', action = wezterm.action.ActivateTabRelative(1),
+		},
+		{
+			key = 'h', mods='SHIFT|CTRL', action = wezterm.action.ActivateTabRelative(-1),
+		},
+		{
+			key = 's', mods='SHIFT|CTRL', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+		},
+		{
+			key = 'v', mods='SHIFT|CTRL', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+		},
 
-    colors = {
-      foreground = black,
-      background = yellow,
+	}
 
-      cursor_bg = black,
-      cursor_fg = white,
-
-      selection_fg = black,
-      selection_bg = yellow,
-
-      split = "#444444",
-
-      ansi = {black, brown, green, "olive", blue, purple, "teal", "silver"},
-      brights = {"grey", "red", "lime", "yellow", "blue", "fuchsia", "aqua", "white"},
-    }
 }
