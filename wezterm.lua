@@ -37,14 +37,14 @@ return {
 			key = 'v', mods='SHIFT|CTRL', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
 		},
 		{
-		  key = 'h', mods = 'WIN', action = act.ActivatePaneDirection 'Left',
+		  key = 'h', mods = 'ALT', action = act.ActivatePaneDirection 'Left',
 		},
 		{
-		  key = 'l', mods = 'WIN', action = act.ActivatePaneDirection 'Right', },
+		  key = 'l', mods = 'ALT', action = act.ActivatePaneDirection 'Right', },
 		{
-		  key = 'k', mods = 'WIN', action = act.ActivatePaneDirection 'Up', },
+		  key = 'k', mods = 'ALT', action = act.ActivatePaneDirection 'Up', },
 		{
-		  key = 'j', mods = 'WIN', action = act.ActivatePaneDirection 'Down',
+		  key = 'j', mods = 'ALT', action = act.ActivatePaneDirection 'Down',
 		},
 
 	}
