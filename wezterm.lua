@@ -7,7 +7,8 @@ wezterm.on("gui-startup", function()
 end)
 
 return { 
-	font = wezterm.font("JetBrains Mono Medium"),
+	default_cwd = [[C:\Dev\nea_project]],
+	font = wezterm.font("JetBrains Mono", { weight = 'Medium' }),
 	font_size = 13.5,
     window_close_confirmation = "NeverPrompt",
 	use_fancy_tab_bar = false,
@@ -34,6 +35,16 @@ return {
 		},
 		{
 			key = 'v', mods='SHIFT|CTRL', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+		},
+		{
+		  key = 'h', mods = 'WIN', action = act.ActivatePaneDirection 'Left',
+		},
+		{
+		  key = 'l', mods = 'WIN', action = act.ActivatePaneDirection 'Right', },
+		{
+		  key = 'k', mods = 'WIN', action = act.ActivatePaneDirection 'Up', },
+		{
+		  key = 'j', mods = 'WIN', action = act.ActivatePaneDirection 'Down',
 		},
 
 	}
