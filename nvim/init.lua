@@ -61,7 +61,12 @@ require("gruvbox").setup({
   inverse = true, 
   contrast = "hard", -- can be "hard", "soft" or empty string
   palette_overrides = {},
-  overrides = {},
+  overrides = {
+      ["@punctuation.bracket"] = { fg = "#ebdbb2"},
+      ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
+      ["@operator"] = { fg = "#ebdbb2" },
+      ["@constructor"] = { fg = "#ebdbb2" }
+  },
   dim_inactive = false,
   transparent_mode = false,
 })
@@ -113,7 +118,22 @@ require('packer').startup(function(use)
         'aliawan01/ouroboros.nvim',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
+
+    use {
+        'norcalli/nvim-colorizer.lua',
+        config = function() 
+            require('colorizer').setup()
+        end
+    }
+
 end)
+vim.keymap.set("n",    "<F10>",
+    function()
+        local result = vim.treesitter.get_captures_at_cursor(0)
+        print(vim.inspect(result))
+    end,
+    { noremap = true, silent = false }
+)
 
 require('autoclose').setup()
 require('mason').setup()
