@@ -6,7 +6,7 @@ vim.cmd [[
 local options = {
 	encoding = 'UTF-8',
 	hidden = true,
-    	background = "dark",
+    background = "dark",
 	wrap = false,
 	errorbells = false,
 	incsearch = true,
@@ -32,11 +32,13 @@ local options = {
 	autoread = true,
 	updatetime = 50,
 	expandtab = true,
-    	showmode = false,
-    	laststatus = 3,
-    	autoread = true,
+    showmode = false,
+    laststatus = 3,
+    autoread = true,
 	cinoptions = {'L0', 'g0', 'b1'},
-    	cursorline = true
+    cursorline = false,
+    sidescroll = 1,
+    sidescrolloff = 5
 }
 
 if vim.fn.has('termguicolors') then
@@ -128,6 +130,7 @@ require('packer').startup(function(use)
         end
     }
     use "vim-scripts/CursorLineCurrentWindow"
+
 end)
 vim.keymap.set("n",    "<F10>",
     function()
