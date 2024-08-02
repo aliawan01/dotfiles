@@ -6,6 +6,7 @@ vim.cmd [[
 local options = {
 	encoding = 'UTF-8',
 	hidden = true,
+    background = "dark",
 	wrap = false,
 	errorbells = false,
 	incsearch = true,
@@ -31,10 +32,12 @@ local options = {
 	autoread = true,
 	updatetime = 50,
 	expandtab = true,
-    showmode = false,
-    laststatus = 3,
-    autoread = true,
+    	showmode = false,
+    	laststatus = 3,
+    	autoread = true,
 	cinoptions = {'L0', 'g0', 'b1'},
+   	guicursor = "",
+    	cursorline = true
 }
 
 if vim.fn.has('termguicolors') then
