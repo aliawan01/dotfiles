@@ -6,7 +6,7 @@ vim.cmd [[
 local options = {
 	encoding = 'UTF-8',
 	hidden = true,
-    background = "dark",
+    	background = "dark",
 	wrap = false,
 	errorbells = false,
 	incsearch = true,
@@ -36,7 +36,6 @@ local options = {
     	laststatus = 3,
     	autoread = true,
 	cinoptions = {'L0', 'g0', 'b1'},
-   	guicursor = "",
     	cursorline = true
 }
 
@@ -128,7 +127,7 @@ require('packer').startup(function(use)
             require('colorizer').setup()
         end
     }
-
+    use "vim-scripts/CursorLineCurrentWindow"
 end)
 vim.keymap.set("n",    "<F10>",
     function()
