@@ -46,33 +46,33 @@ if vim.fn.has('termguicolors') then
 end
 
 require("gruvbox").setup({
-  terminal_colors = true,
-  undercurl = false,
-  underline = false,
-  bold = true,
-  italic = {
-    strings = false,
-    emphasis = false,
-    comments = false,
-    operators = false,
-    folds = false,
-  },
-  strikethrough = false,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  invert_intend_guides = false,
-  inverse = true, 
-  contrast = "hard", -- can be "hard", "soft" or empty string
-  palette_overrides = {},
-  overrides = {
-      ["@punctuation.bracket"] = { fg = "#ebdbb2"},
-      ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
-      ["@operator"] = { fg = "#ebdbb2" },
-      ["@constructor"] = { fg = "#ebdbb2" }
-  },
-  dim_inactive = false,
-  transparent_mode = false,
+    terminal_colors = true,
+    undercurl = false,
+    underline = false,
+    bold = true,
+    italic = {
+        strings = false,
+        emphasis = false,
+        comments = false,
+        operators = false,
+        folds = false,
+    },
+    strikethrough = false,
+    invert_selection = false,
+    invert_signs = false,
+    invert_tabline = false,
+    invert_intend_guides = false,
+    inverse = true, 
+    contrast = "hard", -- can be "hard", "soft" or empty string
+    palette_overrides = {},
+    overrides = {
+        ["@punctuation.bracket"] = { fg = "#ebdbb2"},
+        ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
+        ["@operator"] = { fg = "#ebdbb2" },
+        ["@constructor"] = { fg = "#ebdbb2" }
+    },
+    dim_inactive = false,
+    transparent_mode = false,
 })
 
 vim.cmd("colorscheme gruvbox")
@@ -130,8 +130,8 @@ require('packer').startup(function(use)
         end
     }
     use "vim-scripts/CursorLineCurrentWindow"
-
 end)
+
 vim.keymap.set("n",    "<F10>",
     function()
         local result = vim.treesitter.get_captures_at_cursor(0)
@@ -199,10 +199,12 @@ require('toggleterm').setup {
     },
 }
 
-vim.keymap.set("n", "<C-1>", ':TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
-vim.keymap.set("n", "<C-2>", ':TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("n", "<C-1>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
+vim.keymap.set("n", "<C-1>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
+vim.keymap.set("i", "<C-1>", '<C-\\><C-n>:wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("i", "<C-2>", '<C-\\><C-n>:wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
 
-vim.keymap.set("n", "<leader>po", ":e C:\\Dev\\Real Work\\Web Server\\LICENSE<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>i", ":e C:\\Dev\\Real Work\\Web Server\\LICENSE<CR>", {noremap = true, silent = true})
 
 vim.cmd("autocmd BufEnter * if &buftype ==# 'terminal' | startinsert! | endif")
 
@@ -501,6 +503,8 @@ set_key('v', 'K', ":m '<-2<CR>gv=gv")
 
 set_key('n', '<C-d>', '<C-d>zz')
 set_key('n', '<C-u>', '<C-u>zz')
+
+set_key("x", "<leader>p", [["_dP]])
 
 -- Autocommands
 vim.cmd [[
