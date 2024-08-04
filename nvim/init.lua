@@ -200,9 +200,7 @@ require('toggleterm').setup {
 }
 
 vim.keymap.set("n", "<C-1>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
-vim.keymap.set("n", "<C-1>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
-vim.keymap.set("i", "<C-1>", '<C-\\><C-n>:wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
-vim.keymap.set("i", "<C-2>", '<C-\\><C-n>:wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("n", "<C-2>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
 
 vim.keymap.set("n", "<leader>i", ":e C:\\Dev\\Real Work\\Web Server\\LICENSE<CR>", {noremap = true, silent = true})
 
