@@ -49,6 +49,7 @@ require("gruvbox").setup({
     terminal_colors = true,
     undercurl = false,
     underline = false,
+    strikethrough = false,
     bold = true,
     italic = {
         strings = false,
@@ -57,7 +58,6 @@ require("gruvbox").setup({
         operators = false,
         folds = false,
     },
-    strikethrough = false,
     invert_selection = false,
     invert_signs = false,
     invert_tabline = false,
@@ -69,7 +69,8 @@ require("gruvbox").setup({
         ["@punctuation.bracket"] = { fg = "#ebdbb2"},
         ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
         ["@operator"] = { fg = "#ebdbb2" },
-        ["@constructor"] = { fg = "#ebdbb2" }
+        ["@constructor"] = { fg = "#ebdbb2" },
+        ["Normal"] = {bg = "#1b1b1a", fg = "#ebdbb2"}
     },
     dim_inactive = false,
     transparent_mode = false,
@@ -170,6 +171,7 @@ if vim.g.neovide then
     vim.g.neovide_fullscreen = true
 end
 
+
 -- ToggleTerm
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]], {})
 vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], {})
@@ -178,6 +180,21 @@ vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], {})
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], {})
 vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], {})
 
+function ClearTerm(is_win)
+  vim.opt_local.scrollback = 1
+
+  if is_win == 1 then
+    vim.api.nvim_feedkeys("cls", 't', false)
+  else
+    vim.api.nvim_feedkeys("clear", 't', false)
+  end
+
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<cr>', true, false, true), 't', true)
+
+  vim.opt_local.scrollback = 10000
+end
+
+vim.keymap.set('t', '<C-l>', [[<C-\><C-N>:lua ClearTerm(1)<CR>]], mapping_opts)
 
 require('toggleterm').setup {
     open_mapping = [[<C-'>]],
@@ -199,8 +216,11 @@ require('toggleterm').setup {
     },
 }
 
-vim.keymap.set("n", "<C-1>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat" dir=<CR>', {noremap = true, silent = true})
-vim.keymap.set("n", "<C-2>", ':wa<CR>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("n", "<C-1>", ':wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("n", "<C-2>", ':wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
+
+vim.keymap.set("t", "<C-1>", '<C-\\><C-n>:wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat"<CR>', {noremap = true, silent = true})
+vim.keymap.set("t", "<C-2>", '<C-\\><C-n>:wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
 
 vim.keymap.set("n", "<leader>i", ":e C:\\Dev\\Real Work\\Web Server\\LICENSE<CR>", {noremap = true, silent = true})
 
