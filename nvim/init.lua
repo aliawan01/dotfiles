@@ -6,7 +6,7 @@ vim.cmd [[
 local options = {
 	encoding = 'UTF-8',
 	hidden = true,
-    background = "dark",
+    	background = "dark",
 	wrap = false,
 	errorbells = false,
 	incsearch = true,
@@ -32,13 +32,13 @@ local options = {
 	autoread = true,
 	updatetime = 50,
 	expandtab = true,
-    showmode = false,
-    laststatus = 3,
-    autoread = true,
+    	showmode = false,
+    	laststatus = 3,
+    	autoread = true,
 	cinoptions = {'L0', 'g0', 'b1'},
-    cursorline = false,
-    sidescroll = 1,
-    sidescrolloff = 5
+   	cursorline = false,
+    	sidescroll = 1,
+    	sidescrolloff = 5
 }
 
 if vim.fn.has('termguicolors') then
@@ -70,7 +70,8 @@ require("gruvbox").setup({
         ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
         ["@operator"] = { fg = "#ebdbb2" },
         ["@constructor"] = { fg = "#ebdbb2" },
-        ["Normal"] = {bg = "#1b1b1a", fg = "#ebdbb2"}
+        ["Normal"] = {bg = "#1b1b1a", fg = "#ebdbb2"},
+        ["@lsp.mod.deprecated.c"] = {link = "GruvboxGreenBold"}
     },
     dim_inactive = false,
     transparent_mode = false,
