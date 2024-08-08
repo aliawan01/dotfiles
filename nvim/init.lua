@@ -36,7 +36,7 @@ local options = {
     	laststatus = 3,
     	autoread = true,
 	cinoptions = {'L0', 'g0', 'b1'},
-   	cursorline = false,
+    	cursorline = false,
     	sidescroll = 1,
     	sidescrolloff = 5
 }
@@ -91,6 +91,7 @@ require('packer').startup(function(use)
     use 'm4xshen/autoclose.nvim'
     use 'markonm/traces.vim' 
     use 'tpope/vim-commentary'
+    use 'tpope/vim-vinegar'
 
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.8',
