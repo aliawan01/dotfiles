@@ -38,7 +38,8 @@ local options = {
 	cinoptions = {'L0', 'g0', 'b1'},
     	cursorline = false,
     	sidescroll = 1,
-    	sidescrolloff = 5
+    	sidescrolloff = 5,
+    	guicursor = ""
 }
 
 if vim.fn.has('termguicolors') then
