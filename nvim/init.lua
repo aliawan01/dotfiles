@@ -4,81 +4,48 @@ vim.cmd [[
 ]] 
 
 local options = {
-	encoding = 'UTF-8',
-	hidden = true,
-    	background = "dark",
-	wrap = false,
-	errorbells = false,
-	incsearch = true,
-	linespace = 1,
-	autoindent = true,
-	hlsearch = false,
-	clipboard = 'unnamedplus',
-	backup = false,
-	writebackup = false,
-	swapfile = false,
-	scrolloff = 8,
-	tabstop = 4,
-	shiftwidth = 4,
-	softtabstop = 4,
-	smartindent = true,
-	smarttab = true,
-	cmdheight = 1,
-	mouse = 'a',
-	autochdir = true,
-	splitright = true,
-	visualbell = true,
-	wildmenu = true,
-	autoread = true,
-	updatetime = 50,
-	expandtab = true,
-    	showmode = false,
-    	laststatus = 3,
-    	autoread = true,
-	cinoptions = {'L0', 'g0', 'b1'},
-    	cursorline = false,
-    	sidescroll = 1,
-    	sidescrolloff = 5,
-    	guicursor = ""
+    encoding = 'UTF-8',
+    hidden = true,
+    background = "dark",
+    wrap = false,
+    errorbells = false,
+    incsearch = true,
+    linespace = 1,
+    autoindent = true,
+    hlsearch = false,
+    clipboard = 'unnamedplus',
+    backup = false,
+    writebackup = false,
+    swapfile = false,
+    scrolloff = 8,
+    tabstop = 4,
+    shiftwidth = 4,
+    softtabstop = 4,
+    smartindent = true,
+    smarttab = true,
+    cmdheight = 1,
+    mouse = 'a',
+    autochdir = true,
+    splitright = true,
+    visualbell = true,
+    wildmenu = true,
+    autoread = true,
+    updatetime = 50,
+    expandtab = true,
+    showmode = false,
+    laststatus = 3,
+    autoread = true,
+    cinoptions = {'L0', 'g0', 'b1'},
+    cursorline = false,
+    sidescroll = 1,
+    sidescrolloff = 5,
+    guicursor = ""
 }
 
 if vim.fn.has('termguicolors') then
-	vim.opt.termguicolors = true
+	vim.opt.termguicolors = false
 end
 
-require("gruvbox").setup({
-    terminal_colors = true,
-    undercurl = false,
-    underline = false,
-    strikethrough = false,
-    bold = true,
-    italic = {
-        strings = false,
-        emphasis = false,
-        comments = false,
-        operators = false,
-        folds = false,
-    },
-    invert_selection = false,
-    invert_signs = false,
-    invert_tabline = false,
-    invert_intend_guides = false,
-    inverse = true, 
-    contrast = "hard", -- can be "hard", "soft" or empty string
-    palette_overrides = {},
-    overrides = {
-        ["@punctuation.bracket"] = { fg = "#ebdbb2"},
-        ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
-        ["@operator"] = { fg = "#ebdbb2" },
-        ["@constructor"] = { fg = "#ebdbb2" },
-        ["Normal"] = {bg = "#1b1b1a", fg = "#ebdbb2"},
-        ["@lsp.mod.deprecated.c"] = {link = "GruvboxGreenBold"}
-    },
-    dim_inactive = false,
-    transparent_mode = false,
-})
-
-vim.cmd("colorscheme gruvbox")
 
 for setting, option in pairs(options) do
 	vim.opt[setting] = option
@@ -94,12 +61,16 @@ require('packer').startup(function(use)
     use 'tpope/vim-commentary'
     use 'tpope/vim-vinegar'
 
+    use { 
+        'nvim-telescope/telescope-fzf-native.nvim',
+        run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release'
+    }
+
     use {
-      'nvim-telescope/telescope.nvim', tag = '0.1.8',
-      requires = {
-          {'nvim-lua/plenary.nvim'},
-          { 'nvim-telescope/telescope-fzf-native.nvim', run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' }
-      }
+        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        requires = {
+            {'nvim-lua/plenary.nvim'},
+        }
     }
 
     use {
@@ -134,6 +105,7 @@ require('packer').startup(function(use)
         end
     }
     use "vim-scripts/CursorLineCurrentWindow"
+    use 'MunifTanjim/nui.nvim'
 end)
 
 vim.keymap.set("n",    "<F10>",
@@ -143,6 +115,40 @@ vim.keymap.set("n",    "<F10>",
     end,
     { noremap = true, silent = false }
 )
+
+require("gruvbox").setup({
+    terminal_colors = true,
+    undercurl = false,
+    underline = false,
+    strikethrough = false,
+    bold = false,
+    italic = {
+        strings = false,
+        emphasis = false,
+        comments = false,
+        operators = false,
+        folds = false,
+    },
+    invert_selection = false,
+    invert_signs = false,
+    invert_tabline = false,
+    invert_intend_guides = false,
+    inverse = true, 
+    contrast = "hard", -- can be "hard", "soft" or empty string
+    palette_overrides = {},
+    overrides = {
+        ["@punctuation.bracket"] = { fg = "#ebdbb2" },
+        ["@punctuation.delimiter"] = { fg = "#ebdbb2" },
+        ["@operator"] = { fg = "#ebdbb2" },
+        ["@constructor"] = { fg = "#ebdbb2" },
+        ["Normal"] = {bg = "#1b1b1a", fg = "#ebdbb2"},
+        ["@lsp.mod.deprecated.c"] = {link = "GruvboxGreenBold"}
+    },
+    dim_inactive = false,
+    transparent_mode = false,
+})
+
+vim.cmd("colorscheme gruvbox")
 
 require('autoclose').setup()
 require('mason').setup()
@@ -162,13 +168,13 @@ vim.keymap.set('n', '<C-S-f>', function() require("ouroboros").switch(false) end
 
 -- GUI Configuration
 if vim.g.neovide then 
-	vim.opt.guifont = "Cousine,Cousine Nerd Font Mono:h15"
+	-- vim.opt.guifont = "IBM Plex Mono,Cousine Nerd Font Mono:h14"
 	vim.g.neovide_padding_top = 5
 	vim.g.neovide_padding_bottom = 0
 	vim.g.neovide_padding_right = 0
 	vim.g.neovide_padding_left = 5
 	vim.g.neovide_position_animation_length = 0
-	vim.g.neovide_scroll_animation_length = 0.15
+	vim.g.neovide_scroll_animation_length = 0.12
 	vim.g.neovide_cursor_animation_length = 0
     vim.g.neovide_no_idle = true
     vim.g.neovide_fullscreen = true
@@ -219,17 +225,10 @@ require('toggleterm').setup {
     },
 }
 
-vim.keymap.set("n", "<C-1>", ':wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat"<CR>', {noremap = true, silent = true})
-vim.keymap.set("n", "<C-2>", ':wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
-
-vim.keymap.set("t", "<C-1>", '<C-\\><C-n>:wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\build.bat"<CR>', {noremap = true, silent = true})
-vim.keymap.set("t", "<C-2>", '<C-\\><C-n>:wa!<CR><C-l>:TermExec cmd="cd C:\\Dev\\Real Work\\Web Server&cls&misc\\run.bat"<CR>', {noremap = true, silent = true})
-
-vim.keymap.set("n", "<leader>i", ":e C:\\Dev\\Real Work\\Web Server\\LICENSE<CR>", {noremap = true, silent = true})
-
 vim.cmd("autocmd BufEnter * if &buftype ==# 'terminal' | startinsert! | endif")
 
 -- Treesitter Configuration
+require('nvim-treesitter.install').compilers = { "cl" }
 require('nvim-treesitter.configs').setup {
   ensure_installed = { "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "asm", "bash", "javascript", "html", "css", "python" },
 
@@ -237,7 +236,8 @@ require('nvim-treesitter.configs').setup {
   sync_install = false,
 
   -- Automatically install missing parsers when entering buffer
-  auto_install = false,
+  auto_install = true,
+
 
   highlight = {
     enable = true,
@@ -344,6 +344,13 @@ require('lspconfig')['lua_ls'].setup{
 	handlers = handlers,
     capabilities = capabilities
 }
+
+require('lspconfig')['jdtls'].setup{
+    on_attach = on_attach,
+	handlers = handlers,
+    capabilities = capabilities
+}
+
 
 -- LSP Signature 
 require("lsp_signature").setup {
@@ -453,15 +460,17 @@ require('telescope').setup {
             previewer = false
 		},
 	},
-    extensions = {
-        fzf = {
-            fuzzy = true,                    -- false will only do exact matching
-            override_generic_sorter = true,  -- override the generic sorter
-            override_file_sorter = true,     -- override the file sorter
-            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-        }
-    }
+   extensions = {
+       fzf = {
+           fuzzy = true,                    -- false will only do exact matching
+           override_generic_sorter = true,  -- override the generic sorter
+           override_file_sorter = true,     -- override the file sorter
+           case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+       }
+   }
 }
+
+require('telescope').load_extension('fzf')
 
 vim.g.telescope_current_working_dir = nil
 function ToggleTelescopeWorkingDir(dir)
@@ -487,7 +496,6 @@ function GetTelescopeWorkingDir()
     print("[TELESCOPE WORKING DIR] Current working dir: " .. current_dir)
 end
 
-require('telescope').load_extension('fzf')
 
 -- Automatically sets the working directory
 ToggleTelescopeWorkingDir(vim.fn.getcwd())
@@ -527,6 +535,9 @@ set_key('n', '<C-u>', '<C-u>zz')
 
 set_key("x", "<leader>p", [["_dP]])
 
+set_key('n', '<C-n>', ':cnext<CR>')
+set_key('n', '<C-m>', ':cprev<CR>')
+
 -- Autocommands
 vim.cmd [[
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -534,3 +545,160 @@ vim.cmd [[
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
 ]]
+
+-- Ingenius Project Management System
+-- NOTE(ali): Will need to create projects.info on each NEW machine, or find a way to do it automatically ;)
+local projectsFilePath = vim.fn.stdpath("config") .. "/" .. "projects.info"
+
+function GetProjectsTable()
+    local fileContents = vim.fn.readfile(projectsFilePath, "", 100)
+    if fileContents[1] == nil then
+        return {}
+    else
+        return vim.json.decode(fileContents[1])
+    end
+end
+
+function AddProjectToProjectsTable(projectInfoTable) 
+    local fileTable = GetProjectsTable()
+    fileTable[#fileTable+1] = projectInfoTable
+    vim.fn.writefile({vim.json.encode(fileTable)}, projectsFilePath)
+end
+
+function DeleteProjectInProjectsTable(projectName) 
+    local projectsTable = GetProjectsTable()
+
+    foundMatchingProjectName = false
+    for index, value in ipairs(projectsTable) do
+        for key, res in pairs(value) do
+            if key == "name" and res == projectName then 
+                print("Deleted project with name: `" .. projectName .. "`")
+                table.remove(projectsTable, index)
+                foundMatchingProjectName = true
+                break
+            end
+        end
+        
+        if foundMatchingProjectName then
+            break
+        end
+    end
+
+    vim.fn.writefile({vim.json.encode(projectsTable)}, projectsFilePath)
+end
+
+local pickers     = require("telescope.pickers")
+local finders     = require("telescope.finders")
+local conf        = require("telescope.config").values
+local actions     = require("telescope.actions")
+local actionState = require("telescope.actions.state")
+
+function PickProject() 
+    local projectFileNames = {}
+    for index, value in ipairs(GetProjectsTable()) do
+        projectFileNames[index] = value.name
+    end
+
+    pickers.new({}, {
+        prompt_title = "Pick Project",
+        finder = finders.new_table {
+            results = projectFileNames
+        },
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(promptBufnr, map)
+            actions.select_default:replace(function()
+                actions.close(promptBufnr)
+                local selection = actionState.get_selected_entry()
+                for index, value in ipairs(GetProjectsTable()) do
+                    if selection[1] == value.name then
+                        vim.cmd("edit " .. value.baseDir)
+                        vim.g.telescope_current_working_dir = value.baseDir
+                        vim.keymap.set('n', '<C-p>', function() require("telescope.builtin").find_files({cwd=value.baseDir}) end, {})
+                        print("[TELESCOPE WORKING DIR] Set current working dir to " .. vim.g.telescope_current_working_dir)
+
+                        local ctrl1Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&cls&' .. value.ctrl1  .. '"<CR>'
+                        local ctrl2Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&cls&' .. value.ctrl2  .. '"<CR>'
+
+                        vim.keymap.set("n", "<C-1>", ctrl1Command, {noremap = true, silent = true})
+                        vim.keymap.set("n", "<C-2>", ctrl2Command, {noremap = true, silent = true})
+
+                        vim.keymap.set("t", "<C-1>", '<C-\\><C-n>' .. ctrl1Command, {noremap = true, silent = true})
+                        vim.keymap.set("t", "<C-2>", '<C-\\><C-n>' .. ctrl2Command, {noremap = true, silent = true})
+                    end
+                end
+
+            end)
+            return true
+        end,
+    }):find()
+end
+
+function DeleteProject() 
+    local projectFileNames = {}
+    for index, value in ipairs(GetProjectsTable()) do
+        projectFileNames[index] = value.name
+    end
+
+    pickers.new({}, {
+        prompt_title = "Delete Project",
+        finder = finders.new_table {
+            results = projectFileNames
+        },
+        sorter = conf.generic_sorter(opts),
+        attach_mappings = function(promptBufnr, map)
+            actions.select_default:replace(function()
+                actions.close(promptBufnr)
+                local selection = actionState.get_selected_entry()
+                for index, value in ipairs(GetProjectsTable()) do
+                    if selection[1] == value.name then
+                        DeleteProjectInProjectsTable(value.name)
+                    end
+                end
+
+            end)
+            return true
+        end,
+    }):find()
+end
+
+function AddProject() 
+    local projectInfo = {}
+
+    local invalidProjectName = true
+    while invalidProjectName do
+        vim.ui.input({ prompt = 'Enter project name: ' }, function(input)
+            local foundExistingProjectWithSameName = false
+            for index, value in ipairs(GetProjectsTable()) do
+                if input == value.name then
+                    foundExistingProjectWithSameName = true
+                    break
+                end
+            end
+
+            if not foundExistingProjectWithSameName then
+                projectInfo.name = input
+                invalidProjectName = false
+            else
+                print("\nA project already exists with that name try again")
+            end
+        end)
+    end
+
+    vim.ui.input({ prompt = 'Enter project directory: ' }, function(input)
+        projectInfo.baseDir = input
+    end)
+
+    vim.ui.input({ prompt = 'Enter <C-1> command: ' }, function(input)
+        projectInfo.ctrl1 = input
+    end)
+
+    vim.ui.input({ prompt = 'Enter <C-2> command: ' }, function(input)
+        projectInfo.ctrl2 = input
+    end)
+
+    AddProjectToProjectsTable(projectInfo)
+end
+
+vim.keymap.set('n', '<leader>pf', function() PickProject() end, {})
+vim.keymap.set('n', '<leader>pd', function() DeleteProject() end, {})
+vim.keymap.set('n', '<leader>pa', function() AddProject() end, {})
