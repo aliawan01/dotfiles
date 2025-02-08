@@ -228,7 +228,8 @@ require('toggleterm').setup {
 vim.cmd("autocmd BufEnter * if &buftype ==# 'terminal' | startinsert! | endif")
 
 -- Treesitter Configuration
-require('nvim-treesitter.install').compilers = { "cl" }
+-- NOTE(ali): Enable this on Windows.
+-- require('nvim-treesitter.install').compilers = { "cl" }
 require('nvim-treesitter.configs').setup {
   ensure_installed = { "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "asm", "bash", "javascript", "html", "css", "python" },
 
