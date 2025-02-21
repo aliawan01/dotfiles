@@ -548,8 +548,14 @@ vim.cmd [[
 ]]
 
 -- Ingenius Project Management System
--- NOTE(ali): Will need to create projects.info on each NEW machine, or find a way to do it automatically ;)
 local projectsFilePath = vim.fn.stdpath("config") .. "/" .. "projects.info"
+local projectFileExists = io.open(projectsFilePath , "r")
+if projectFileExists ~= nil then
+    io.close(projectFileExists)
+else 
+    projectFileExists = io.open(projectsFilePath, "w")
+    projectFileExists:close()
+end
 
 function GetProjectsTable()
     local fileContents = vim.fn.readfile(projectsFilePath, "", 100)
