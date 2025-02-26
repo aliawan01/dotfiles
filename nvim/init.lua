@@ -203,7 +203,7 @@ function ClearTerm(is_win)
   vim.opt_local.scrollback = 10000
 end
 
-vim.keymap.set('t', '<C-l>', [[<C-\><C-N>:lua ClearTerm(1)<CR>]], mapping_opts)
+vim.keymap.set('t', '<C-l>', [[<C-\><C-N>:lua ClearTerm(0)<CR>]], mapping_opts)
 
 require('toggleterm').setup {
     open_mapping = [[<C-'>]],
@@ -352,6 +352,18 @@ require('lspconfig')['jdtls'].setup{
     capabilities = capabilities
 }
 
+require('lspconfig').rust_analyzer.setup{
+    on_attach = on_attach,
+	handlers = handlers,
+    capabilities = capabilities,
+    settings = {
+        ["rust-analyzer"] = {
+            diagnostics = {
+                enable = false
+            }
+        }
+    }
+}
 
 -- LSP Signature 
 require("lsp_signature").setup {
@@ -623,8 +635,8 @@ function PickProject()
                         vim.keymap.set('n', '<C-p>', function() require("telescope.builtin").find_files({cwd=value.baseDir}) end, {})
                         print("[TELESCOPE WORKING DIR] Set current working dir to " .. vim.g.telescope_current_working_dir)
 
-                        local ctrl1Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&cls&' .. value.ctrl1  .. '"<CR>'
-                        local ctrl2Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&cls&' .. value.ctrl2  .. '"<CR>'
+                        local ctrl1Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&&clear&&' .. value.ctrl1  .. '"<CR>'
+                        local ctrl2Command = ':wa!<CR><C-l>:TermExec cmd="cd ' .. value.baseDir .. '&&clear&&' .. value.ctrl2  .. '"<CR>'
 
                         vim.keymap.set("n", "<C-1>", ctrl1Command, {noremap = true, silent = true})
                         vim.keymap.set("n", "<C-2>", ctrl2Command, {noremap = true, silent = true})
