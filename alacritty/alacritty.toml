@@ -1,0 +1,67 @@
+[window]
+decorations = "Full"
+# startup_mode = "Fullscreen"
+startup_mode = "Maximized"
+dynamic_title = false
+padding = { x = 2, y = 0 }
+
+[general]
+live_config_reload = true
+
+[font]
+normal = { family = "Fira Code Retina", style = "Regular" }
+bold   = { family = "Fira Code Retina", style = "Bold" }
+italic = { family = "Fira Code Retina", style = "Italic" }
+size = 15
+
+[bell]
+command = "None"
+
+[cursor] 
+style.shape = "Block"
+style.blinking = "Never"
+unfocused_hollow = true
+
+[terminal]
+shell = "ubuntu"
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [
+    { key = "n", mods = "Control|Shift", action = "CreateNewWindow" },
+    { key = "+", mods = "Control|Shift", action = "IncreaseFontSize" },
+    { key = "_", mods = "Control|Shift", action = "DecreaseFontSize" },
+    { key = "=", mods = "Control",       action = "ResetFontSize" },
+    { key = "C", mods = "Control|Shift", action = "Copy" },
+    { key = "V", mods = "Control|Shift", action = "Paste" },
+    { key = "+", mods = "Control", action = "None" },
+    { key = "-", mods = "Control", action = "None" },
+    { key = "F11", action = "ToggleFullscreen" },
+]
+
+# Campbell
+[colors.primary]
+background = '#0c0c0c'
+foreground = '#cccccc'
+
+[colors.normal]
+black      = '#0c0c0c'
+red        = '#c50f1f'
+green      = '#13a10e'
+yellow     = '#c19c00'
+blue       = '#0037da'
+magenta    = '#881798'
+cyan       = '#3a96dd'
+white      = '#cccccc'
+
+[colors.bright]
+black      = '#767676'
+red        = '#e74856'
+green      = '#16c60c'
+yellow     = '#f9f1a5'
+blue       = '#3b78ff'
+magenta    = '#b4009e'
+cyan       = '#61d6d6'
+white      = '#f2f2f2'
