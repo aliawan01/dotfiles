@@ -9,9 +9,9 @@ padding = { x = 2, y = 0 }
 live_config_reload = true
 
 [font]
-normal = { family = "Fira Code Retina", style = "Regular" }
-bold   = { family = "Fira Code Retina", style = "Bold" }
-italic = { family = "Fira Code Retina", style = "Italic" }
+normal = { family = "FiraCode Nerd Font Mono", style = "Retina" }
+bold   = { family = "Fira Code Nerd Font", style = "Bold" }
+italic = { family = "Fira Code Nerd Font", style = "Italic" }
 size = 15
 
 [bell]
@@ -39,29 +39,42 @@ bindings = [
     { key = "+", mods = "Control", action = "None" },
     { key = "-", mods = "Control", action = "None" },
     { key = "F11", action = "ToggleFullscreen" },
+    { key="Key0", mods= "Control", chars= "\u001b[48;5u" },
+    { key="Key1", mods= "Control", chars= "\u001b[49;5u" },
+    { key="Key2", mods= "Control", chars= "\u001b[50;5u" },
+    { key="Key3", mods= "Control", chars= "\u001b[51;5u" },
+    { key="Key4", mods= "Control", chars= "\u001b[52;5u" },
+    { key="Key5", mods= "Control", chars= "\u001b[53;5u" },
+    { key="Key6", mods= "Control", chars= "\u001b[54;5u" },
+    { key="Key7", mods= "Control", chars= "\u001b[55;5u" },
+    { key="Key8", mods= "Control", chars= "\u001b[56;5u" },
+    { key="Key9", mods= "Control", chars= "\u001b[57;5u" }
 ]
 
-# Campbell
 [colors.primary]
-background = '#0c0c0c'
-foreground = '#cccccc'
+background = '#0E1415'
+foreground = '#CECECE'
+
+[colors.cursor]
+text = '#0E1415'
+cursor = '#CECECE'
 
 [colors.normal]
-black      = '#0c0c0c'
-red        = '#c50f1f'
-green      = '#13a10e'
-yellow     = '#c19c00'
-blue       = '#0037da'
-magenta    = '#881798'
-cyan       = '#3a96dd'
-white      = '#cccccc'
+black = '#0E1415'
+red = '#e25d56'
+green = '#73ca50'
+yellow = '#e9bf57'
+blue = '#4a88e4'
+magenta = '#915caf'
+cyan = '#23acdd'
+white = '#f0f0f0'
 
 [colors.bright]
-black      = '#767676'
-red        = '#e74856'
-green      = '#16c60c'
-yellow     = '#f9f1a5'
-blue       = '#3b78ff'
-magenta    = '#b4009e'
-cyan       = '#61d6d6'
-white      = '#f2f2f2'
+black = '#777777'
+red = '#f36868'
+green = '#88db3f'
+yellow = '#f0bf7a'
+blue = '#6f8fdb'
+magenta = '#e987e9'
+cyan = '#4ac9e2'
+white = '#FFFFFF'
