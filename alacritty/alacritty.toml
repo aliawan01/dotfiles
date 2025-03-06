@@ -10,8 +10,8 @@ live_config_reload = true
 
 [font]
 normal = { family = "FiraCode Nerd Font Mono", style = "Retina" }
-bold   = { family = "Fira Code Nerd Font", style = "Bold" }
-italic = { family = "Fira Code Nerd Font", style = "Italic" }
+bold   = { family = "FiraCode Nerd Font Mono", style = "Bold" }
+italic = { family = "FiraCode Nerd Font Mono", style = "Italic" }
 size = 15
 
 [bell]
