@@ -105,7 +105,6 @@ require('packer').startup(function(use)
         end
     }
     use "vim-scripts/CursorLineCurrentWindow"
-    use 'MunifTanjim/nui.nvim'
 end)
 
 vim.keymap.set("n",    "<F10>",
