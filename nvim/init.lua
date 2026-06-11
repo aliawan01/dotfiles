@@ -88,6 +88,7 @@ require('packer').startup(function(use)
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/nvim-cmp'
     use 'onsails/lspkind.nvim'
+    use 'lukas-reineke/indent-blankline.nvim'
     use {"akinsho/toggleterm.nvim", tag = '*', config = function()
         require("toggleterm").setup()
     end}
@@ -105,6 +106,10 @@ require('packer').startup(function(use)
         end
     }
     use "vim-scripts/CursorLineCurrentWindow"
+    use {
+        "nvzone/typr",
+        requires = { {"nvzone/volt"} }
+    }
 end)
 
 vim.keymap.set("n",    "<F10>",
@@ -149,6 +154,7 @@ require("gruvbox").setup({
 
 vim.cmd("colorscheme gruvbox")
 
+require("ibl").setup()
 require('autoclose').setup()
 require('mason').setup()
 require('ouroboros').setup({
@@ -165,21 +171,6 @@ require('ouroboros').setup({
 vim.keymap.set('n', '<C-f>', function() require("ouroboros").switch(true) end)
 vim.keymap.set('n', '<C-S-f>', function() require("ouroboros").switch(false) end)
 
--- GUI Configuration
-if vim.g.neovide then 
-	-- vim.opt.guifont = "IBM Plex Mono,Cousine Nerd Font Mono:h14"
-	vim.g.neovide_padding_top = 5
-	vim.g.neovide_padding_bottom = 0
-	vim.g.neovide_padding_right = 0
-	vim.g.neovide_padding_left = 5
-	vim.g.neovide_position_animation_length = 0
-	vim.g.neovide_scroll_animation_length = 0.12
-	vim.g.neovide_cursor_animation_length = 0
-    vim.g.neovide_no_idle = true
-    vim.g.neovide_fullscreen = true
-end
-
-
 -- ToggleTerm
 vim.keymap.set('t', '<C-[>', [[<C-\><C-n>]], {})
 vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], {})
@@ -188,47 +179,9 @@ vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], {})
 vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], {})
 vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], {})
 
-function ClearTerm(is_win)
-  vim.opt_local.scrollback = 1
-
-  if is_win == 1 then
-    vim.api.nvim_feedkeys("cls", 't', false)
-  else
-    vim.api.nvim_feedkeys("clear", 't', false)
-  end
-
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<cr>', true, false, true), 't', true)
-
-  vim.opt_local.scrollback = 10000
-end
-
-vim.keymap.set('t', '<C-l>', [[<C-\><C-N>:lua ClearTerm(0)<CR>]], mapping_opts)
-
-require('toggleterm').setup {
-    open_mapping = [[<C-'>]],
-    autochdir = false,
-    start_in_insert = true,
-    insert_mappings = true,
-    terminal_mappings = true,
-    persist_size = true,
-    persist_mode = true,
-    direction = 'horizontal',
-    shell = vim.o.shell,
-    auto_scroll = true,
-    size = 20,
-    winbar = {
-        enabled = false,
-        name_formatter = function(term) --  term: Terminal
-            return term.name
-        end
-    },
-}
-
 vim.cmd("autocmd BufEnter * if &buftype ==# 'terminal' | startinsert! | endif")
 
 -- Treesitter Configuration
--- NOTE(ali): Enable this on Windows.
--- require('nvim-treesitter.install').compilers = { "cl" }
 require('nvim-treesitter.configs').setup {
   ensure_installed = { "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "asm", "bash", "javascript", "html", "css", "python" },
 
@@ -247,121 +200,121 @@ require('nvim-treesitter.configs').setup {
 
 -- Autocomplete
 vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
-local cmp = require('cmp')
-local lspkind = require('lspkind')
-cmp.setup({
-    completion = {
-        keyword_length = 2
-    },
-    performance = {
-        max_view_entries = 7
-    },
-    view = {
-        docs = {
-            auto_open = false
-        }
-    },
-    formatting = {
-        fields = {'abbr', 'kind', 'menu'},
-        format = lspkind.cmp_format({
-            with_text = true,
-
-            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-            menu = {
-                buffer = "[Buffer]",
-                nvim_lsp = "[LSP]",
-                path = "[Path]"
-            },
-
-            before = function (_, vim_item)
-                if vim_item.menu ~= nil and string.len(vim_item.menu) > 0 then
-                  vim_item.menu = string.sub(vim_item.menu, 1, 0) .. ""
-                end
-                return vim_item
-            end
-        })
-
-    },
-
-    mapping = {
-        ["<C-k>"] = cmp.mapping.select_prev_item(),
-        ["<C-j>"] = cmp.mapping.select_next_item(),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-e>"] = cmp.mapping.close(),
-        ["<CR>"] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        }),
-    },
-    sources = {
-        { name = "nvim_lsp"},
-        { name = "path"},
-        { name = "buffer"}
-    }
-})
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+--local cmp = require('cmp')
+--local lspkind = require('lspkind')
+--cmp.setup({
+--    completion = {
+--        keyword_length = 2
+--    },
+--    performance = {
+--        max_view_entries = 7
+--    },
+--    view = {
+--        docs = {
+--            auto_open = false
+--        }
+--    },
+--    formatting = {
+--        fields = {'abbr', 'kind', 'menu'},
+--        format = lspkind.cmp_format({
+--            with_text = true,
+--
+--            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+--            menu = {
+--                buffer = "[Buffer]",
+--                nvim_lsp = "[LSP]",
+--                path = "[Path]"
+--            },
+--
+--            before = function (_, vim_item)
+--                if vim_item.menu ~= nil and string.len(vim_item.menu) > 0 then
+--                  vim_item.menu = string.sub(vim_item.menu, 1, 0) .. ""
+--                end
+--                return vim_item
+--            end
+--        })
+--
+--    },
+--
+--    mapping = {
+--        ["<C-k>"] = cmp.mapping.select_prev_item(),
+--        ["<C-j>"] = cmp.mapping.select_next_item(),
+--        ["<C-Space>"] = cmp.mapping.complete(),
+--        ["<C-e>"] = cmp.mapping.close(),
+--        ["<CR>"] = cmp.mapping.confirm({
+--            behavior = cmp.ConfirmBehavior.Replace,
+--            select = true,
+--        }),
+--    },
+--    sources = {
+--        { name = "nvim_lsp"},
+--        { name = "path"},
+--        { name = "buffer"}
+--    }
+--})
+--local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- LSP
 local handlers =  {
-  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = "rounded"}),
-  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = "rounded"}),
+  ["textDocument/hover"] =  vim.lsp.buf.hover({border = "rounded"}),
+  ["textDocument/signatureHelp"] =  vim.lsp.buf.signature_help({border = "rounded"}),
 }
 
 local on_attach = function(client, bufnr)
-    local bufopts = {buffer = bufnr, remap = false}
+  local bufopts = {buffer = bufnr, remap = false}
 
-	vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-	vim.keymap.set('n', 'gd', require("telescope.builtin").lsp_definitions, bufopts)
-	vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-	vim.keymap.set('n', '<leader>t', require("telescope.builtin").lsp_type_definitions, bufopts)
-	vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
-	vim.keymap.set('n', '<leader>r', require("telescope.builtin").lsp_references, bufopts)
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', require("telescope.builtin").lsp_definitions, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<leader>t', require("telescope.builtin").lsp_type_definitions, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<leader>r', require("telescope.builtin").lsp_references, bufopts)
 
-	vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wd', vim.lsp.buf.remove_workspace_folder, bufopts)
-	vim.keymap.set('n', '<space>wl', function()
-		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-	end, bufopts)
+  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wd', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<space>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
 
-	vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 end
 
 
 require('lspconfig')['clangd'].setup{
-    on_attach = on_attach,
-	handlers = handlers,
-    capabilities = capabilities
+  on_attach = on_attach,
+  handlers = handlers,
+  capabilities = capabilities
 }
 
 require('lspconfig')['pyright'].setup{
-    on_attach = on_attach,
-	handlers = handlers,
-    capabilities = capabilities
+  on_attach = on_attach,
+  handlers = handlers,
+  capabilities = capabilities
 }
 
 require('lspconfig')['lua_ls'].setup{
-    on_attach = on_attach,
-	handlers = handlers,
-    capabilities = capabilities
+  on_attach = on_attach,
+  handlers = handlers,
+  capabilities = capabilities
 }
 
 require('lspconfig')['jdtls'].setup{
-    on_attach = on_attach,
-	handlers = handlers,
-    capabilities = capabilities
+  on_attach = on_attach,
+  handlers = handlers,
+  capabilities = capabilities
 }
 
 require('lspconfig').rust_analyzer.setup{
-    on_attach = on_attach,
-	handlers = handlers,
-    capabilities = capabilities,
-    settings = {
-        ["rust-analyzer"] = {
-            diagnostics = {
-                enable = false
-            }
-        }
+  on_attach = on_attach,
+  handlers = handlers,
+  capabilities = capabilities,
+  settings = {
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = false
+      }
     }
+  }
 }
 
 -- LSP Signature 
@@ -553,7 +506,7 @@ set_key('n', '<C-m>', ':cprev<CR>')
 -- Autocommands
 vim.cmd [[
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-	autocmd FileType cpp,h,c set softtabstop=4
+	autocmd FileType cpp,h,c,svelte,js set tabstop=2 shiftwidth=2 softtabstop=2
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
 ]]
