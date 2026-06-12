@@ -122,9 +122,9 @@ vim.keymap.set("n",    "<F10>",
 
 require("gruvbox").setup({
     terminal_colors = true,
-    undercurl = false,
+    undercurl = true,
     underline = false,
-    strikethrough = kalse,
+    strikethrough = false,
     bold = false,
     italic = {
         strings = false,
@@ -276,9 +276,15 @@ local on_attach = function(client, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, bufopts)
 
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+  --vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 end
 
+vim.diagnostic.config({
+  underline = true,
+  virtual_text = true,
+  signs = true,
+  severity_sort = true,
+})
 
 local lsp_server_names = { 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls'}
 
