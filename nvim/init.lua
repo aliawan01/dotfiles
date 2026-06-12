@@ -124,7 +124,7 @@ require("gruvbox").setup({
     terminal_colors = true,
     undercurl = false,
     underline = false,
-    strikethrough = false,
+    strikethrough = kalse,
     bold = false,
     italic = {
         strings = false,
@@ -280,29 +280,15 @@ local on_attach = function(client, bufnr)
 end
 
 
-require('lspconfig')['clangd'].setup{
-  on_attach = on_attach,
-  handlers = handlers,
-  capabilities = capabilities
-}
+local lsp_server_names = { 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls'}
 
-require('lspconfig')['pyright'].setup{
-  on_attach = on_attach,
-  handlers = handlers,
-  capabilities = capabilities
-}
-
-require('lspconfig')['lua_ls'].setup{
-  on_attach = on_attach,
-  handlers = handlers,
-  capabilities = capabilities
-}
-
-require('lspconfig')['jdtls'].setup{
-  on_attach = on_attach,
-  handlers = handlers,
-  capabilities = capabilities
-}
+for _, server_name in ipairs(lsp_server_names) do 
+  require('lspconfig')[server_name].setup{
+    on_attach = on_attach,
+    handlers = handlers,
+    capabilities = capabilities
+  }
+end
 
 require('lspconfig').rust_analyzer.setup{
   on_attach = on_attach,
@@ -506,7 +492,7 @@ set_key('n', '<C-m>', ':cprev<CR>')
 -- Autocommands
 vim.cmd [[
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-	autocmd FileType cpp,h,c,svelte,js set tabstop=2 shiftwidth=2 softtabstop=2
+	autocmd FileType cpp,h,c,svelte,js,ts set tabstop=2 shiftwidth=2 softtabstop=2
 	autocmd FileType make setlocal noexpandtab softtabstop=0
 	autocmd FileType text setlocal linebreak
 ]]
