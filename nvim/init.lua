@@ -51,6 +51,10 @@ for setting, option in pairs(options) do
 	vim.opt[setting] = option
 end
 
+-- TODO(ali): Remove this once telescope.nvim stops using vim.tbl_flatten
+vim.tbl_flatten = function(t)
+  return vim.iter(t):flatten(math.huge):totable()
+end
 
 -- Plugins
 require('packer').startup(function(use)
@@ -87,7 +91,6 @@ require('packer').startup(function(use)
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/nvim-cmp'
-    use 'onsails/lspkind.nvim'
     use 'lukas-reineke/indent-blankline.nvim'
     use {"akinsho/toggleterm.nvim", tag = '*', config = function()
         require("toggleterm").setup()
@@ -255,10 +258,7 @@ vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
 --local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- LSP
-local handlers =  {
-  ["textDocument/hover"] =  vim.lsp.buf.hover({border = "rounded"}),
-  ["textDocument/signatureHelp"] =  vim.lsp.buf.signature_help({border = "rounded"}),
-}
+vim.o.winborder = "rounded"
 
 local on_attach = function(client, bufnr)
   local bufopts = {buffer = bufnr, remap = false}
@@ -266,6 +266,7 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
   vim.keymap.set('n', 'gd', require("telescope.builtin").lsp_definitions, bufopts)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'E', vim.diagnostic.open_float, bufopts)
   vim.keymap.set('n', '<leader>t', require("telescope.builtin").lsp_type_definitions, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
   vim.keymap.set('n', '<leader>r', require("telescope.builtin").lsp_references, bufopts)
@@ -286,20 +287,13 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-local lsp_server_names = { 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls'}
-
-for _, server_name in ipairs(lsp_server_names) do 
-  require('lspconfig')[server_name].setup{
+vim.lsp.enable({ 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls', 'rust_analyzer'})
+vim.lsp.config('*', {
     on_attach = on_attach,
-    handlers = handlers,
     capabilities = capabilities
-  }
-end
+})
 
-require('lspconfig').rust_analyzer.setup{
-  on_attach = on_attach,
-  handlers = handlers,
-  capabilities = capabilities,
+vim.lsp.config('rust_analyzer', {
   settings = {
     ["rust-analyzer"] = {
       diagnostics = {
@@ -307,7 +301,8 @@ require('lspconfig').rust_analyzer.setup{
       }
     }
   }
-}
+})
+
 
 -- LSP Signature 
 require("lsp_signature").setup {
