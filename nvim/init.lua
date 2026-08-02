@@ -79,10 +79,8 @@ require('packer').startup(function(use)
 
     use {
         'nvim-treesitter/nvim-treesitter',
-        run = function()
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
-        end,
+        branch = 'master',
+        run = ':TSUpdate' 
     }
     use 'nvim-lualine/lualine.nvim'
     use 'williamboman/mason.nvim'
@@ -186,7 +184,22 @@ vim.cmd("autocmd BufEnter * if &buftype ==# 'terminal' | startinsert! | endif")
 
 -- Treesitter Configuration
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { "c", "lua", "vim", "vimdoc", "markdown", "markdown_inline", "asm", "bash", "javascript", "html", "css", "python" },
+  ensure_installed = {
+    "c",
+    "lua",
+    "vim",
+    "vimdoc",
+    "markdown",
+    "markdown_inline",
+    "asm",
+    "bash",
+    "javascript",
+    "typescript",
+    "svelte",
+    "html",
+    "css",
+    "python",
+  },
 
   -- Install parsers synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -260,25 +273,28 @@ vim.opt.completeopt = {'menuone', 'noselect', 'noinsert'}
 -- LSP
 vim.o.winborder = "rounded"
 
-local on_attach = function(client, bufnr)
-  local bufopts = {buffer = bufnr, remap = false}
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local opts = { buffer = ev.buf }
 
-  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-  vim.keymap.set('n', 'gd', require("telescope.builtin").lsp_definitions, bufopts)
-  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-  vim.keymap.set('n', 'E', vim.diagnostic.open_float, bufopts)
-  vim.keymap.set('n', '<leader>t', require("telescope.builtin").lsp_type_definitions, bufopts)
-  vim.keymap.set('n', 'gr', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<leader>r', require("telescope.builtin").lsp_references, bufopts)
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', require("telescope.builtin").lsp_definitions, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'E', vim.diagnostic.open_float, opts)
+    vim.keymap.set('n', '<leader>t', require("telescope.builtin").lsp_type_definitions, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader>r', require("telescope.builtin").lsp_references, opts)
 
-  vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wd', vim.lsp.buf.remove_workspace_folder, bufopts)
-  vim.keymap.set('n', '<space>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, bufopts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wd', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+  end
 
   --vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-end
+})
 
 vim.diagnostic.config({
   underline = true,
@@ -287,10 +303,8 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-vim.lsp.enable({ 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls', 'rust_analyzer'})
 vim.lsp.config('*', {
-    on_attach = on_attach,
-    capabilities = capabilities
+    on_attach = on_attach
 })
 
 vim.lsp.config('rust_analyzer', {
@@ -302,6 +316,8 @@ vim.lsp.config('rust_analyzer', {
     }
   }
 })
+
+vim.lsp.enable({ 'svelte', 'ts_ls', 'clangd', 'pyright', 'lua_ls', 'jdtls', 'rust_analyzer', 'gopls'})
 
 
 -- LSP Signature 
