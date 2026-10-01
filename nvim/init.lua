@@ -71,7 +71,7 @@ require('packer').startup(function(use)
     }
 
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        'nvim-telescope/telescope.nvim', tag = 'v0.1.9',
         requires = {
             {'nvim-lua/plenary.nvim'},
         }
